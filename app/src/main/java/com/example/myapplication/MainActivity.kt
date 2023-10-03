@@ -21,7 +21,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    lateinit var adapter: UserAdapter
+    lateinit var userAdapter: UserAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private lateinit var userList: ArrayList<User>
@@ -34,10 +34,10 @@ class MainActivity : AppCompatActivity() {
         mAuth = Firebase.auth   //인증 초기화
         mDbRef = Firebase.database.reference    //DB초기화
         userList = ArrayList()  //리스트 초기화
-        adapter = UserAdapter(this, userList)
+        userAdapter = UserAdapter(this, userList)
 
         binding.userRecycelrView.layoutManager = LinearLayoutManager(this)
-        binding.userRecycelrView.adapter = adapter
+        binding.userRecycelrView.adapter = userAdapter
 
 
         //유저리스트 사용자 정보 가져오기
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                         userList.add(currentUser!!)
                     }
                 }
-                adapter.notifyDataSetChanged()
+                userAdapter.notifyDataSetChanged()
             }
             //onCancelled  오류 발생 시 실행
             override fun onCancelled(error: DatabaseError) {

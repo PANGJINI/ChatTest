@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context=".ChatActivity">
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recyclerView"
@@ -14,6 +16,18 @@
         android:layout_above="@id/input_layout"
         android:layout_alignParentTop="true" />
 
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extended_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/btn_background"
+        android:text="간편"
+        android:layout_above="@id/input_layout"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        />
+
     <LinearLayout
         android:id="@+id/input_layout"
         android:layout_width="match_parent"
@@ -21,17 +35,23 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:weightSum="100">
+        <Button
+            android:id="@+id/_btn"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:text="+"/>
         <EditText
             android:id="@+id/message_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="85"
+            android:layout_weight="80"
             android:hint="메세지를 입력하세요"/>
         <Button
             android:id="@+id/send_btn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_weight="15"
+            android:layout_weight="10"
             android:text="전송"/>
     </LinearLayout>
 

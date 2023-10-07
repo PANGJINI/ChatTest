@@ -1,7 +1,9 @@
 package com.example.myapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityChatBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -85,5 +87,11 @@ class ChatActivity : AppCompatActivity() {
                 }
 
             })
-    }
+
+        //extended fab 클릭시 SimpleChatActivity로 이동
+        binding.extendedFab.setOnClickListener {
+            val intent: Intent = Intent(this@ChatActivity, SimpleChatActivity::class.java)
+            startActivity(intent)
+        }
+    } //oncreate 끝
 }

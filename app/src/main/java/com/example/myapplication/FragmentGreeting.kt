@@ -27,8 +27,8 @@ class FragmentGreeting : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentGreetingBinding.inflate(inflater, container, false)
-        //return inflater.inflate(R.layout.fragment_greeting, container, false)
+        //binding = FragmentGreetingBinding.inflate(inflater, container, false)
+        binding = FragmentGreetingBinding.inflate(inflater)
         return binding.root
     }
 
@@ -42,10 +42,9 @@ class FragmentGreeting : Fragment(), View.OnClickListener {
         btns[1] = binding.btnGreeting2
         btns[2] = binding.btnGreeting3
         btns[3] = binding.btnGreeting4
-        btns[0]?.setOnClickListener(this)
-//        btns.forEach { btns ->
-//            btns?.setOnClickListener(this)
-//        }
+        btns.forEach { btns ->
+            btns?.setOnClickListener(this)
+        }
     }
 
 
@@ -53,25 +52,23 @@ class FragmentGreeting : Fragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
 
-
-        ////리스너 안먹음???? 왜?????
-        ////데이터를 다른 액티비티로 넘기기
-
-
-
-
-    //SimpleChatActivity().binding.messageEdit.setText(btnText)
-        //var messageEdit = simpleChatActivity.findViewById<EditText>(R.id.message_edit).setText(btnText)
-        //simpleChatActivity.messageEdit.setText(btnText)
-
-
     }
 
     override fun onClick(v: View?) {
+        var btnText: String
+        when(v?.id) {
+            binding.btnGreeting1.id -> { btnText = btns[0]?.getText().toString()
+                (activity as SimpleChatActivity).binding.messageEdit.append(" "+btnText) }
+            binding.btnGreeting2.id ->{ btnText = btns[1]?.getText().toString()
+                (activity as SimpleChatActivity).binding.messageEdit.append(" "+btnText) }
+            binding.btnGreeting3.id ->{ btnText = btns[2]?.getText().toString()
+                (activity as SimpleChatActivity).binding.messageEdit.append(" "+btnText) }
+            binding.btnGreeting4.id ->{ btnText = btns[3]?.getText().toString()
+                (activity as SimpleChatActivity).binding.messageEdit.append(" "+btnText) }
+        }
 
-        var btnText = btns[0]?.getText().toString()
-        Log.e("fragment", btnText)
-        Toast.makeText(context, btnText, Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, btnText, Toast.LENGTH_LONG).show()
+
     }
 
 }

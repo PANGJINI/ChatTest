@@ -10,11 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication"
+        android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
         tools:targetApi="31">
         <activity
             android:name=".SimpleChatActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".ChatActivity"
+            />
         <activity
             android:name=".ChatActivity"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"

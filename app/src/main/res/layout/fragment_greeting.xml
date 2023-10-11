@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    tools:context=".FragmentGreeting">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/btnGreeting1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:text="안녕하세요~"/>
+    <Button
+        android:id="@+id/btnGreeting2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:text="날씨가 참 좋네요"/>
+    <Button
+        android:id="@+id/btnGreeting3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:text="식사는 하셨나?"/>
+    <Button
+        android:id="@+id/btnGreeting4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:text="존 나 배고픔ㅠㅠ"/>
+
+</GridLayout>

@@ -3,9 +3,14 @@ package com.example.myapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityChatBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -17,7 +22,7 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var receiverName: String
     private lateinit var receiverUid: String
-    private lateinit var binding: ActivityChatBinding
+    lateinit var binding: ActivityChatBinding
     lateinit var mAuth: FirebaseAuth
     lateinit var mDbRef: DatabaseReference
 
@@ -32,6 +37,18 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //뒤로가기 버튼
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        //뷰페이저에 ViewPagerAdapter 연결하기
+        binding.viewpager.adapter = ViewPagerAdapter(this)
+
+        //탭과 뷰페이저 연결하기
+        var tabTextList = listOf("인사", "취미", "농담하기", "플러팅하기")
+        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
+            tab.text = tabTextList[position]
+        }.attach()
 
         //초기화
         messageList = ArrayList()
@@ -88,10 +105,21 @@ class ChatActivity : AppCompatActivity() {
 
             })
 
-        //extended fab 클릭시 SimpleChatActivity로 이동
+        //extended fab 클릭시 간편채팅, 일반채팅으로 화면전환
         binding.extendedFab.setOnClickListener {
-            val intent: Intent = Intent(this@ChatActivity, SimpleChatActivity::class.java)
-            startActivity(intent)
+            val btnText: String = binding.extendedFab.getText().toString()
+
+            when (btnText) {
+                "간편채팅" -> { binding.frameChat.visibility = GONE
+                    binding.frameSimpleChat.visibility = VISIBLE
+                    binding.extendedFab.setText("일반채팅")
+                }
+                "일반채팅" -> { binding.frameChat.visibility = VISIBLE
+                    binding.frameSimpleChat.visibility = GONE
+                    binding.extendedFab.setText("간편채팅")
+                }
+            }
+
         }
     } //oncreate 끝
 }

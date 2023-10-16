@@ -40,7 +40,7 @@ class SignUpActivity : AppCompatActivity() {
                         Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
                         Log.d("signUp", "email: $email, password: $password")
 
-                        val intent: Intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                        val intent: Intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                         startActivity(intent)
                         addUserDatabase(name, email, mAuth.currentUser?.uid!!)
 

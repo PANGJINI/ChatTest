@@ -20,7 +20,8 @@
         <activity
             android:name=".ChatActivity"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:parentActivityName=".MainActivity">
 
         </activity>
         <activity

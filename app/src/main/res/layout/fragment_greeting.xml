@@ -24,12 +24,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
-        android:text="식사는 하셨나?"/>
+        android:text="오늘은 날이 춥네요"/>
     <Button
         android:id="@+id/btnGreeting4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
-        android:text="존 나 배고픔ㅠㅠ"/>
+        android:text="식사는 하셨어요?"/>
 
 </GridLayout>

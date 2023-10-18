@@ -13,17 +13,16 @@
         android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".SimpleChatActivity"
-            android:exported="true"
-            android:parentActivityName=".ChatActivity"
-            />
-        <activity
-            android:name=".ChatActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
-            android:exported="true"
-            android:parentActivityName=".MainActivity">
+            android:name=".MainActivity2"
+            android:exported="true" >
 
         </activity>
+
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".SignUpActivity"
             android:exported="true" />

@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         mDbRef.child("user").addValueEventListener(object:ValueEventListener {
             //onDataChange  데이터 변경 시 실행
             override fun onDataChange(snapshot: DataSnapshot) {
-                for(postSnapshot in snapshot.children) {
+                for(postSnapshot in snapshot.children) {    //children 내에 있는 데이터만큼 반복
                     //유저 정보
                     val currentUser = postSnapshot.getValue(User::class.java)
                     //Log.d("userlist", "currentUser: $currentUser")
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                         userList.add(currentUser!!)
                     }
                 }
+                //notifyDataSetChanged() 리사이클러뷰의 리스트를 업데이트 할 때 사용(리스트 크기, 아이템 모두 변경 가능)
                 userAdapter.notifyDataSetChanged()
             }
             //onCancelled  오류 발생 시 실행

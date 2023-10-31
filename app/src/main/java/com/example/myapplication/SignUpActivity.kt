@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -19,12 +20,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.jar.Manifest
 
 class SignUpActivity : AppCompatActivity() {
 
+
     lateinit var binding: ActivitySignUpBinding
     lateinit var mAuth: FirebaseAuth
+    lateinit var storage: FirebaseStorage
     private lateinit var mDbRef: DatabaseReference
     private var imageUri: Uri? = null
 
@@ -54,6 +59,7 @@ class SignUpActivity : AppCompatActivity() {
 
         mAuth = Firebase.auth   //인증 초기화
         mDbRef = Firebase.database.reference    //DB초기화
+        storage = FirebaseStorage.getInstance()
 
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
         var profileCheck = false
@@ -121,12 +127,11 @@ class SignUpActivity : AppCompatActivity() {
                         Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
                         val user = Firebase.auth.currentUser
                         val userId = user?.uid
-                        val userIdSt = userId.toString()
 
                         val intent: Intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                         startActivity(intent)
 
-
+                        Upload(userId!!)
                         addUserDatabase(
 
                             email,
@@ -161,6 +166,17 @@ class SignUpActivity : AppCompatActivity() {
 //        }
 //    }
 
+
+    fun Upload(userId: String) {
+        Log.e("하아", "업로드 함수 실행")
+        //var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        var imgFileName = "IMAGE_${userId}_.png"
+        var storageRef = storage?.reference?.child("images")?.child(imgFileName)
+
+        storageRef?.putFile(imageUri!!)?.addOnSuccessListener {
+            Toast.makeText(this, "이미지 업로드", Toast.LENGTH_LONG).show()
+        }
+    }
 
     //addUserDatabase : 데이터베이스에 사용자 저장하는 함수
     private fun addUserDatabase(

@@ -13,6 +13,7 @@ import java.util.Locale
 
 class MessageAdapter(private val context: Context, private val messageList: ArrayList<Message>):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
         private val receive = 1
         private val send = 2
 

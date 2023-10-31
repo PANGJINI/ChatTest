@@ -32,11 +32,6 @@
         android:layout_height="wrap_content"
         android:hint="이름"/>
     <EditText
-        android:id="@+id/edit_nick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="별명"/>
-    <EditText
         android:id="@+id/edit_age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,12 +63,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="지역"/>
-    <EditText
-        android:id="@+id/edit_number"
-        android:inputType="phone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="전화번호"/>
     <TableLayout
         android:id="@+id/edit_interest"
         android:layout_width="wrap_content"

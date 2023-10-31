@@ -77,10 +77,8 @@ class SignUpActivity : AppCompatActivity() {
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
             val name = binding.editName.text.toString()
-            val nick = binding.editNick.text.toString()
             val age = binding.editAge.text.toString()
             val area = binding.editArea.text.toString()
-            val number = binding.editNumber.text.toString()
 
 //            // 이미지 파일 경로
 //            val imagePath = "users/${mAuth.currentUser?.uid}/profile.jpg"
@@ -137,11 +135,9 @@ class SignUpActivity : AppCompatActivity() {
                             email,
                             mAuth.currentUser?.uid!!,
                             name,
-                            nick,
                             age,
                             gender,
                             area,
-                            number,
                             interest
                         )
 
@@ -184,16 +180,14 @@ class SignUpActivity : AppCompatActivity() {
         email: String,
         uId: String,
         name: String,
-        nick: String,
         age: String,
         gender: String,
         area: String,
-        number: String,
         interest: MutableList<String>
     ) {
         mDbRef.child("user").child(uId).setValue(
             User(
-                email, uId, name, nick, age, gender, area, number,
+                email, uId, name, age, gender, area,
                 interest.toString()
             )
         )

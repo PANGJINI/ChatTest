@@ -1,15 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentGreeting">
+    android:orientation="vertical"
+    tools:context=".FragmentFlirting">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:fillViewport="true"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity=""
-        android:text="플러팅 프래그먼트" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/btnFlirting1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="혹시 쌍둥이세요? 아니시라고요? 그럼 그쪽이 제일 예쁘겠네요?"
+                />
+            <TextView
+                android:id="@+id/btnFlirting2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="고양이가 군대에 가도 되나요? 이거 동물학대 아닌가요?"/>
+            <TextView
+                android:id="@+id/btnFlirting3"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="혹시 너 MBTI가 CUTE야?"/>
+            <TextView
+                android:id="@+id/btnFlirting4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="너 믿는 신 있어? 난 있는데… 바로 당신🥰"/>
+            <TextView
+                android:id="@+id/btnFlirting5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="너 착한 줄 알았는데 안 착하네…. 내 마음 속에 안착😉"/>
+            <TextView
+                android:id="@+id/btnFlirting6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="너 T야? ‧˚₊*̥✧ my sweet little kitty ⋆.*◌ೃ *:･ﾟ✧"/>
+            <TextView
+                android:id="@+id/btnFlirting7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="꼰대라고 소문난 거 알아요? 내꼰대"/>
+            <TextView
+                android:id="@+id/btnFlirting8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="장관이네요 절경이고요 신이주신 선물이네요"/>
+            <TextView
+                android:id="@+id/btnFlirting9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="혹시 렌즈꼈어요? 나의 보이프렌즈~⭐"/>
+            <TextView
+                android:id="@+id/btnFlirting10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="요즘 너한테 벽이 느껴져… 너라는 완벽⭐"/>
+            <TextView
+                android:id="@+id/btnFlirting11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="너 다 거품낀 거라며?ㅋㅋ 언빌리버블"/>
+            <TextView
+                android:id="@+id/btnFlirting12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="너 돌잡이때 그거 잡았다며? 내 심장"/>
+            <TextView
+                android:id="@+id/btnFlirting13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="너 때문에 오늘 비 올 것 같아… 심장마비"/>
+            <TextView
+                android:id="@+id/btnFlirting14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="아 진짜.. 그거 알아요? 잘생긴 사람을 보면 기억을 잃는대요. 아 진짜.. 그거 알아요? 잘생긴 사람을 보면 기억
+을 잃는대요. 아 진짜.. 그거 알아요? 잘생긴 사람을 보면 기억을,"/>
+            <TextView
+                android:id="@+id/btnFlirting15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                android:text="그거 기억나? 우리 둘이서 루브르 박물관 털러갔는데 너는 조각상인척해서 나만 경찰에 잡혀갔잖아…."/>
 
-</FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    </LinearLayout>

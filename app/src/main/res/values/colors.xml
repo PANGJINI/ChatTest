@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pink">#FFF7CAC9</color>
+    <color name="sendMessage">#CDFAE0E0</color>
+    <color name="receiveMessage">#E4E4E4</color>
+    <color name="fab">#F2EBFF</color>
+    <color name="textColor">#FF7A7A7A</color>
 </resources>

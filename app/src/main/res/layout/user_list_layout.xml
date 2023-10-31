@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--유저리스트 리사이클러뷰 출력 형태 결정-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!--사용자 이름을 보여주는 TextView-->
-    <TextView
-        android:id="@+id/user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:textSize="30sp"/>
+
+        <!--사용자 이름을 보여주는 TextView-->
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"/>
 
     <!--사용자를 구분해주는 선-->
     <View
@@ -21,4 +23,4 @@
         android:layout_marginTop="5dp"
         android:background="@color/black"/>
 
-</RelativeLayout>
+</LinearLayout>

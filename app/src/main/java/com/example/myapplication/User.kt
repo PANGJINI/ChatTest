@@ -12,5 +12,5 @@ data class User(
     var interest: String
 
 ){
-    constructor(): this("", "", "", "","","","","", "")
+    constructor(): this( "", "", "","","","","", "", "")
 }

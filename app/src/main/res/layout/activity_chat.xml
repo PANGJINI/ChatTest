@@ -42,41 +42,47 @@
     </RelativeLayout>
 
 
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/extended_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:icon="@drawable/btn_background"
-        android:text="간편채팅"
         android:layout_above="@id/input_layout"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/fab"
+        android:text="간편채팅"
+        android:textColor="#7A7A7A"
+        app:icon="@drawable/icon_chat"
+         />
 
     <LinearLayout
         android:id="@+id/input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <Button
+        android:orientation="horizontal"
+        android:gravity="center">
+        <ImageButton
             android:id="@+id/_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="+"/>
+            android:background="@drawable/icon_add"
+            android:scaleType="fitCenter"/>
         <EditText
             android:id="@+id/message_edit"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="8"
             android:hint="메세지를 입력하세요"/>
-        <Button
+        <ImageButton
             android:id="@+id/send_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="전송"/>
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/icon_send_btn"
+            android:scaleType="fitCenter"
+            />
     </LinearLayout>
 
 </RelativeLayout>

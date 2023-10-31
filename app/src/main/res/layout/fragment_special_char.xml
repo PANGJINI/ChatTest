@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentGreeting">
+    tools:context=".FragmentSpecialChar">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity=""
-        android:text="취미 프래그먼트" />
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

@@ -6,7 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    val fragments = listOf<Fragment>(FragmentGreeting(), FragmentHobby(), FragmentJoke(), FragmentFlirting())
+    val fragments = listOf<Fragment>(FragmentFlirting(), FragmentMeme(), FragmentSpecialChar(), FragmentText())
 
     //프래그먼트 페이지 수 반환
     override fun getItemCount(): Int = fragments.size

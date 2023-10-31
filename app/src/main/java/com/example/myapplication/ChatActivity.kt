@@ -1,6 +1,8 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.GONE
@@ -40,12 +42,15 @@ class ChatActivity : AppCompatActivity() {
 
         //뒤로가기 버튼
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //액션바 색상 설정
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFF7CAC9")))
 
         //뷰페이저에 ViewPagerAdapter 연결하기
         binding.viewpager.adapter = ViewPagerAdapter(this)
 
         //탭과 뷰페이저 연결하기
-        var tabTextList = listOf("인사", "취미", "농담하기", "플러팅하기")
+        //var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "텍대", "이모지", "밸런스게임", "논쟁")
+        var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "텍대")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
         }.attach()

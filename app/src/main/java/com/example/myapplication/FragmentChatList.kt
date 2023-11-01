@@ -29,6 +29,7 @@ class FragmentChatList : Fragment() {
     ): View? {
         binding = FragmentChatListBinding.inflate(inflater)
 
+        //어오 배고파
 
 
         return binding.root

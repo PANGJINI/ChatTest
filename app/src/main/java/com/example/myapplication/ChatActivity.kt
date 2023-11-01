@@ -10,7 +10,10 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.myapplication.databinding.ActivityChatBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -127,4 +130,18 @@ class ChatActivity : AppCompatActivity() {
 
         }
     } //oncreate 끝
+
+
+    //간편채팅 프래그먼트들을 연결해주는 뷰페이저
+    class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
+        private lateinit var viewPagerAdapter: ViewPagerAdapter
+        val fragments = listOf<Fragment>(FragmentFlirting(), FragmentMeme(), FragmentSpecialChar(), FragmentText())
+
+        //프래그먼트 페이지 수 반환
+        override fun getItemCount(): Int = fragments.size
+
+        //프래그먼트 객체 얻기
+        override fun createFragment(position: Int): Fragment = fragments[position]
+
+    }
 }

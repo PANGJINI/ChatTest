@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 
 
+/*
+ * 대화중인 채팅방 보여주는 프래그먼트
+ */
 class FragmentChatList : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

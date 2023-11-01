@@ -2,16 +2,18 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 
-class UserAdapter(private val context: Context, private val userList: ArrayList<User>):
+class UserAdapter(private val context: Context?, private val userList: ArrayList<User>):
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     //화면 설정
@@ -34,7 +36,9 @@ class UserAdapter(private val context: Context, private val userList: ArrayList<
         imgRef.downloadUrl.addOnCompleteListener{ task ->
             if(task.isSuccessful) {
                 //글라이드에서 이미지 가져와서 circleView에 설정하기
-                Glide.with(context).load(task.result).into(holder.circleView)
+                if (context != null) {
+                    Glide.with(context).load(task.result).into(holder.circleView)
+                }
             }
         }
 
@@ -44,7 +48,7 @@ class UserAdapter(private val context: Context, private val userList: ArrayList<
             //현재 유저의 이름, uid값을 chatActivity로 넘겨줌
             intent.putExtra("name", currentUser.name)
             intent.putExtra("uId", currentUser.uId)
-            context.startActivity(intent)
+            context!!.startActivity(intent)
         }
     }
 
@@ -58,5 +62,18 @@ class UserAdapter(private val context: Context, private val userList: ArrayList<
         val userMbti: TextView = itemView.findViewById(R.id.user_mbti)
         val userIntroduction: TextView = itemView.findViewById(R.id.user_introduction)
         val circleView: CircleImageView = itemView.findViewById(R.id.circleView)
+        val blueColor = ContextCompat.getColor(itemView.context, R.color.blue)
+        val pinkColor = ContextCompat.getColor(itemView.context, R.color.pink)
+
+        fun borderChange (user: User) {
+            Log.e("테두리", "함수 실행되냐?")
+            if (user.gender == "남성") {
+                circleView.borderColor = blueColor
+            } else if (user.gender == "여성") {
+                circleView.borderColor = pinkColor
+            }
+        }
+
+
     }
 }

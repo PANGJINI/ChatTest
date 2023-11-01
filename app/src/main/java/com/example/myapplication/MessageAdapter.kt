@@ -36,11 +36,11 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
         if(holder.javaClass == SendViewHolder::class.java) {    //보내는 데이터
             val viewHolder = holder as SendViewHolder
             viewHolder.sendMessage.text = currentMessage.message
-            viewHolder.sendTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+            viewHolder.sendTime.text = currentMessage.time
         } else {    //받는 데이터
             val viewHolder = holder as ReceiveViewHolder
             viewHolder.receiveMessage.text = currentMessage.message
-            viewHolder.receiveTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+            viewHolder.receiveTime.text = currentMessage.time
 
         }
     }

@@ -4,8 +4,9 @@ import org.w3c.dom.Comment
 
 class Message(
     var message: String?,
-    var sendId: String?) {
-    constructor():this("","")
+    var sendId: String?,
+    var time: String?) {
+    constructor():this("","", "")
 }
 
 //data class ChatModel(

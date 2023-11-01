@@ -62,18 +62,11 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center">
-        <ImageButton
-            android:id="@+id/_btn"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/icon_add"
-            android:scaleType="fitCenter"/>
         <EditText
             android:id="@+id/message_edit"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="8"
+            android:layout_weight="9"
             android:hint="메세지를 입력하세요"/>
         <ImageButton
             android:id="@+id/send_btn"

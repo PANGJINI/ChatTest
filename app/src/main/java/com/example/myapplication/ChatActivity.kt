@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
 
@@ -48,6 +50,7 @@ class ChatActivity : AppCompatActivity() {
         //액션바 색상 설정
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFF7CAC9")))
 
+
         //뷰페이저에 ViewPagerAdapter 연결하기
         binding.viewpager.adapter = ViewPagerAdapter(this)
 
@@ -58,15 +61,13 @@ class ChatActivity : AppCompatActivity() {
             tab.text = tabTextList[position]
         }.attach()
 
-        //초기화
+        //리사이클러뷰에 어댑터 연결하기
         messageList = ArrayList()
         val messageAdapter: MessageAdapter = MessageAdapter(this, messageList)
-
-        //리사이클러뷰
         binding.chatRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.chatRecyclerView.adapter = messageAdapter
 
-        // 넘어온 상대방의 name, uId 데이터를 receiver-- 변수에 담기
+        //유저리스트에서 넘어온 상대방의 name, uId 데이터를 receiver-- 변수에 담기
         receiverName = intent.getStringExtra("name").toString()
         receiverUid = intent.getStringExtra("uId").toString()
         //액션바에 상대방 이름을 보여주기
@@ -75,27 +76,38 @@ class ChatActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().reference
 
-        //접속자의 uId
+        //접속자 uid, 채팅 전송 시간
         val senderUid = mAuth.currentUser?.uid
+        val time = System.currentTimeMillis()
+        val currentTime = SimpleDateFormat("HH:mm").format(Date(time)).toString()
 
         senderRoom = receiverUid + senderUid
         receiverRoom = senderUid + receiverUid
 
+
         //메세지 전송 이벤트
         binding.sendBtn.setOnClickListener{
             val message = binding.messageEdit.text.toString()
-            val messageObject = Message(message, senderUid)
+            val messageObject = Message(message, senderUid, currentTime)
 
-            //메시지 데이터 저장
+            //디비에 메시지 데이터 저장
             mDbRef.child("chats").child(senderRoom).child("messages").push()
                 .setValue(messageObject).addOnSuccessListener {
                     mDbRef.child("chats").child(receiverRoom).child("messages").push()
                         .setValue(messageObject)
                 }
             binding.messageEdit.setText("")
+
+            //메세지를 보냈을 때 간편채팅 화면이라면, 일반채팅 화면으로 전환해줌
+            val btnText: String = binding.extendedFab.getText().toString()
+            if(btnText == "일반채팅") { binding.frameChat.visibility = VISIBLE
+                binding.frameSimpleChat.visibility = GONE
+                binding.extendedFab.setText("간편채팅")
+            }
+
         }
 
-        //데이터 추가 리스너
+        //채팅 리사이클러뷰에 메시지 내용을 추가
         mDbRef.child("chats").child(senderRoom).child("messages")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

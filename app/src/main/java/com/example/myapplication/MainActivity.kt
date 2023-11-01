@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewpager.adapter = ViewPagerAdapter(this)
 
         //탭과 뷰페이저 연결하기
-        var tabTextList = listOf("채팅방", "사용자")
+        var tabTextList = listOf("사용자", "채팅방")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
         }.attach()

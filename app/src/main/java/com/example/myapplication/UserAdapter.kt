@@ -42,6 +42,9 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
             }
         }
 
+        //사용자 성별이 남성이면 이미지뷰 색상을 파랑으로 바꿔줌
+        holder.borderChange(currentUser)
+
         //유저리스트 클릭 이벤트
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
@@ -66,14 +69,8 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
         val pinkColor = ContextCompat.getColor(itemView.context, R.color.pink)
 
         fun borderChange (user: User) {
-            Log.e("테두리", "함수 실행되냐?")
-            if (user.gender == "남성") {
-                circleView.borderColor = blueColor
-            } else if (user.gender == "여성") {
-                circleView.borderColor = pinkColor
-            }
+            if (user.gender == "남성") circleView.borderColor = blueColor
         }
-
 
     }
 }

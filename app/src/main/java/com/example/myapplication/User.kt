@@ -7,8 +7,9 @@ data class User(
     var age: String,
     var gender: String,
     var area: String,
-    var interest: String
+    var mbti: String,
+    var introduction: String
 
 ){
-    constructor(): this( "", "", "","","","","")
+    constructor(): this( "", "", "","","","","", "")
 }

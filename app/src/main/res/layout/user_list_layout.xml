@@ -1,26 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--유저리스트 리사이클러뷰 출력 형태 결정-->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/icon_user"
+            app:civ_border_overlay="true"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/pink"
+            android:layout_marginRight="10dp"/>
 
-        <!--사용자 이름을 보여주는 TextView-->
-        <TextView
-            android:id="@+id/user_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"/>
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/circleView"
+            android:layout_centerVertical="true">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이름"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/textColor"
+                    android:layout_marginRight="5dp"/>
+                <TextView
+                    android:id="@+id/user_mbti"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mbti"
+                    android:textSize="13dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="@color/textColor"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/user_introduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="상태메시지"
+                android:textSize="13dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/textColor"/>
+        </LinearLayout>
+
 
     <!--사용자를 구분해주는 선-->
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/user_name"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/circleView"
         android:layout_marginTop="5dp"
-        android:background="@color/black"/>
+        android:background="@color/textColor" />
 
-</LinearLayout>
+</RelativeLayout>

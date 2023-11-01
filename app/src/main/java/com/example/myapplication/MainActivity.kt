@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.databinding.UserListLayoutBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -24,6 +25,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var _binding: UserListLayoutBinding
     lateinit var userAdapter: UserAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = UserListLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //액션바 설정
@@ -56,7 +59,12 @@ class MainActivity : AppCompatActivity() {
                     val currentUser = postSnapshot.getValue(User::class.java)
                     //Log.d("userlist", "currentUser: $currentUser")
                     if(mAuth.currentUser?.uid != currentUser?.uId){
+                        if(currentUser?.gender.equals("남자")) {
+
+                            //_binding.circleView.civborderColor = getResources().getColor(R.color.blue)
+                        }
                         userList.add(currentUser!!)
+
                     }
                 }
                 //notifyDataSetChanged() 리사이클러뷰의 리스트를 업데이트 할 때 사용(리스트 크기, 아이템 모두 변경 가능)

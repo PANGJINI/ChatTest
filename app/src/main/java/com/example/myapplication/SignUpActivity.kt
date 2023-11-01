@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -61,6 +64,23 @@ class SignUpActivity : AppCompatActivity() {
         mDbRef = Firebase.database.reference    //DB초기화
         storage = FirebaseStorage.getInstance()
 
+        //지역 정보 설정하는 스피너 설정
+        var area: String = ""
+        val areaList = arrayOf("서울", "인천", "경기", "강원", "충청", "전라", "경상", "제주")
+        var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, areaList)
+        binding.spinnerArea.adapter = adapter
+
+        //스피너에서 선택된 값을 area 변수에 저장하기
+        binding.spinnerArea.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent:AdapterView<*>?, view:View?, position: Int, id: Long) {
+                area = areaList[position].toString()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
+        //갤러리 접근권한 설정
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
         var profileCheck = false
 
@@ -78,7 +98,7 @@ class SignUpActivity : AppCompatActivity() {
             val password = binding.editPassword.text.toString()
             val name = binding.editName.text.toString()
             val age = binding.editAge.text.toString()
-            val area = binding.editArea.text.toString()
+            val intro = binding.editIntroduction.text.toString()
 
 //            // 이미지 파일 경로
 //            val imagePath = "users/${mAuth.currentUser?.uid}/profile.jpg"
@@ -90,33 +110,55 @@ class SignUpActivity : AppCompatActivity() {
             // 선택된 라디오 버튼의 텍스트 읽어오기
             val gender = genderS.text.toString()
 
-            val interest: MutableList<String> = mutableListOf()
-
-            if (binding.interest1.isChecked) {
-                interest.add(binding.interest1.text.toString())
+            val mbti: MutableList<String> = mutableListOf()
+            if (binding.mbti1.isChecked) {
+                mbti.add(binding.mbti1.text.toString())
             }
-            if (binding.interest2.isChecked) {
-                interest.add(binding.interest2.text.toString())
+            if (binding.mbti2.isChecked) {
+                mbti.add(binding.mbti2.text.toString())
             }
-            if (binding.interest3.isChecked) {
-                interest.add(binding.interest3.text.toString())
+            if (binding.mbti3.isChecked) {
+                mbti.add(binding.mbti3.text.toString())
             }
-            if (binding.interest4.isChecked) {
-                interest.add(binding.interest4.text.toString())
+            if (binding.mbti4.isChecked) {
+                mbti.add(binding.mbti4.text.toString())
             }
-            if (binding.interest5.isChecked) {
-                interest.add(binding.interest5.text.toString())
+            if (binding.mbti5.isChecked) {
+                mbti.add(binding.mbti5.text.toString())
             }
-            if (binding.interest6.isChecked) {
-                interest.add(binding.interest6.text.toString())
+            if (binding.mbti6.isChecked) {
+                mbti.add(binding.mbti6.text.toString())
             }
-            if (binding.interest7.isChecked) {
-                interest.add(binding.interest7.text.toString())
+            if (binding.mbti7.isChecked) {
+                mbti.add(binding.mbti7.text.toString())
             }
-            if (binding.interest8.isChecked) {
-                interest.add(binding.interest8.text.toString())
+            if (binding.mbti8.isChecked) {
+                mbti.add(binding.mbti8.text.toString())
             }
-
+            if (binding.mbti9.isChecked) {
+                mbti.add(binding.mbti9.text.toString())
+            }
+            if (binding.mbti10.isChecked) {
+                mbti.add(binding.mbti10.text.toString())
+            }
+            if (binding.mbti11.isChecked) {
+                mbti.add(binding.mbti11.text.toString())
+            }
+            if (binding.mbti12.isChecked) {
+                mbti.add(binding.mbti12.text.toString())
+            }
+            if (binding.mbti13.isChecked) {
+                mbti.add(binding.mbti13.text.toString())
+            }
+            if (binding.mbti14.isChecked) {
+                mbti.add(binding.mbti14.text.toString())
+            }
+            if (binding.mbti15.isChecked) {
+                mbti.add(binding.mbti15.text.toString())
+            }
+            if (binding.mbti16.isChecked) {
+                mbti.add(binding.mbti16.text.toString())
+            }
 
 
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -131,14 +173,14 @@ class SignUpActivity : AppCompatActivity() {
 
                         Upload(userId!!)
                         addUserDatabase(
-
                             email,
                             mAuth.currentUser?.uid!!,
                             name,
                             age,
                             gender,
                             area,
-                            interest
+                            mbti,
+                            intro
                         )
 
                     } else {                    // 회원가입 실패시
@@ -164,31 +206,30 @@ class SignUpActivity : AppCompatActivity() {
 
 
     fun Upload(userId: String) {
-        Log.e("하아", "업로드 함수 실행")
         //var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         var imgFileName = "IMAGE_${userId}_.png"
         var storageRef = storage?.reference?.child("images")?.child(imgFileName)
 
         storageRef?.putFile(imageUri!!)?.addOnSuccessListener {
-            Toast.makeText(this, "이미지 업로드", Toast.LENGTH_LONG).show()
+            Log.d("하아", "스토리지에 이미지 업로드 성공")
         }
     }
 
     //addUserDatabase : 데이터베이스에 사용자 저장하는 함수
     private fun addUserDatabase(
-
         email: String,
         uId: String,
         name: String,
         age: String,
         gender: String,
         area: String,
-        interest: MutableList<String>
+        mbti: MutableList<String>,
+        introduction: String
     ) {
         mDbRef.child("user").child(uId).setValue(
             User(
                 email, uId, name, age, gender, area,
-                interest.toString()
+                mbti.toString(), introduction
             )
         )
     }

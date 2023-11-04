@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -7,9 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,19 +24,21 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
+    companion object { val ADD_ACTIVITY_REQUEST_CODE = 1 }
 
+    //뷰바인딩
+    lateinit var binding: ActivityChatBinding
+    //채팅 내용 설정을 위한 변수들
     private lateinit var receiverName: String
     private lateinit var receiverUid: String
-    lateinit var binding: ActivityChatBinding
-    lateinit var mAuth: FirebaseAuth
-    lateinit var mDbRef: DatabaseReference
-
     //받는 사람의 채팅룸 값 = 보낸사람uid + 받는사람uid
     private lateinit var receiverRoom: String
     //보낸 사람의 채팅룸 값 = 받는사람uid + 보낸사람uid
     private lateinit var senderRoom: String
-
     private lateinit var messageList: ArrayList<Message>
+    lateinit var mAuth: FirebaseAuth
+    lateinit var mDbRef: DatabaseReference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +56,7 @@ class ChatActivity : AppCompatActivity() {
 
         //탭과 뷰페이저 연결하기
         //var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "텍대", "이모지", "밸런스게임", "논쟁")
-        var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "텍대")
+        var tabTextList = listOf("주접&플러팅", "밈", "이모지", "텍대")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
         }.attach()
@@ -99,10 +99,11 @@ class ChatActivity : AppCompatActivity() {
             binding.messageEdit.setText("")
 
             //메세지를 보냈을 때 간편채팅 화면이라면, 일반채팅 화면으로 전환해줌
-            val btnText: String = binding.extendedFab.getText().toString()
+            val btnText: String = binding.fabSimpleChat.getText().toString()
             if(btnText == "일반채팅") { binding.frameChat.visibility = VISIBLE
                 binding.frameSimpleChat.visibility = GONE
-                binding.extendedFab.setText("간편채팅")
+                binding.fabAdd.visibility = GONE
+                binding.fabSimpleChat.setText("간편채팅")
             }
 
         }
@@ -125,18 +126,27 @@ class ChatActivity : AppCompatActivity() {
 
             })
 
-        //extended fab 클릭시 간편채팅, 일반채팅으로 화면전환
-        binding.extendedFab.setOnClickListener {
-            val btnText: String = binding.extendedFab.getText().toString()
+
+        //항목 추가 플로팅버튼 누르면 DataAddActivity로 이동
+        binding.fabAdd.setOnClickListener {
+            val intent = Intent(this, DataAddActivity::class.java)
+            startActivityForResult(intent, ADD_ACTIVITY_REQUEST_CODE)
+        }
+
+        //간편채팅/일반채팅 플로팅버튼
+        binding.fabSimpleChat.setOnClickListener {
+            val btnText: String = binding.fabSimpleChat.getText().toString()
 
             when (btnText) {
                 "간편채팅" -> { binding.frameChat.visibility = GONE
                     binding.frameSimpleChat.visibility = VISIBLE
-                    binding.extendedFab.setText("일반채팅")
+                    binding.fabSimpleChat.setText("일반채팅")
+                    binding.fabAdd.visibility = VISIBLE
                 }
                 "일반채팅" -> { binding.frameChat.visibility = VISIBLE
                     binding.frameSimpleChat.visibility = GONE
-                    binding.extendedFab.setText("간편채팅")
+                    binding.fabSimpleChat.setText("간편채팅")
+                    binding.fabAdd.visibility = GONE
                 }
             }
 
@@ -144,10 +154,42 @@ class ChatActivity : AppCompatActivity() {
     } //oncreate 끝
 
 
-    //간편채팅 프래그먼트들을 연결해주는 뷰페이저
+    //DataAdd 액티비티에서 받아온 값을 파이어베이스 db에 저장하기
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode== ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val category: String? = data!!.getStringExtra("category")
+            data?.getStringExtra("chatData")?.let { newString ->
+                //선택한 카테고리에 따라서 알맞은 파이어베이스 레퍼런스에 데이터 넣어주기
+                when(category) {
+                    "주접&플러팅" -> {
+                        mDbRef.child("simpleChat").child("flirt")
+                            .push().setValue(SimpleChatDataModel(newString))
+                    }
+                    "밈" -> {
+                        mDbRef.child("simpleChat").child("meme")
+                            .push().setValue(SimpleChatDataModel(newString))
+                    }
+                    "텍대" -> {
+                        mDbRef.child("simpleChat").child("textReplace")
+                            .push().setValue(SimpleChatDataModel(newString))
+                    }
+                    "이모지" -> {
+                        mDbRef.child("simpleChat").child("emoji")
+                            .push().setValue(SimpleChatDataModel(newString))
+                    }
+                    else -> { }
+                }
+
+            }
+        }
+    }
+
+
+    //간편채팅 프래그먼트들을 연결해주는 뷰페이저 어댑터
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentFlirting(), FragmentMeme(), FragmentSpecialChar(), FragmentText())
+        val fragments = listOf<Fragment>(FragmentFlirting(), FragmentMeme(), FragmentEmoji(), FragmentTextReplace())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size
@@ -156,4 +198,7 @@ class ChatActivity : AppCompatActivity() {
         override fun createFragment(position: Int): Fragment = fragments[position]
 
     }
+
+
+
 }

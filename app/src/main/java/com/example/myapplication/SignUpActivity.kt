@@ -1,5 +1,7 @@
 package com.example.myapplication
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -16,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -29,27 +32,39 @@ import java.util.jar.Manifest
 
 class SignUpActivity : AppCompatActivity() {
 
-
     lateinit var binding: ActivitySignUpBinding
     lateinit var mAuth: FirebaseAuth
     lateinit var storage: FirebaseStorage
     private lateinit var mDbRef: DatabaseReference
     private var imageUri: Uri? = null
 
-    //이미지 등록하기
-    private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+
+    //갤러리에서 받아온 이미지로 이미지뷰 설정하기
+    private val getContent = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult())
     {
-        result: ActivityResult ->
-        if (result.resultCode == RESULT_OK) {
-            imageUri = result.data?.data    //이미지 경로 원본
-            binding.userImageView.setImageURI(imageUri)   //이미지 뷰를 바꿈
-            Log.d("image","프로필 바꾸기 성공")
-        } else{
-            Log.d("image", "프로필 바꾸기 실패")
+        try{
+            //이미지 로딩
+            var inputStream = contentResolver.openInputStream(it.data!!.data!!)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream!!.close()
+            //inputStream = null
+            bitmap?.let { binding.userImageView.setImageBitmap(bitmap) } ?: let{
+                Log.e("프로필", "프로필 이미지 삽입되었음")
+            }
+        } catch (e:Exception) {
+            e.printStackTrace()
         }
+    //        result: ActivityResult ->
+//        if (result.resultCode == RESULT_OK) {
+//            imageUri = result.data?.data    //이미지 경로 원본
+//            binding.userImageView.setImageURI(imageUri)   //이미지 뷰를 바꿈
+//            Log.d("image","프로필 바꾸기 성공")
+//        } else{
+//            Log.d("image", "프로필 바꾸기 실패")
+//        }
     }
 
-    //private val interest: MutableList<Int> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,17 +95,24 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-        //갤러리 접근권한 설정
-        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-        var profileCheck = false
 
         // 프로필 이미지뷰 클릭이벤트
         binding.userImageView.setOnClickListener{
-            val intentImage = Intent(Intent.ACTION_PICK)
-            intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
-            getContent.launch(intentImage)
-            profileCheck = true
+            //갤러리 접근권한 설정
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1000)
+            var profileCheck = false
+
+            //갤러리 열기
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type="image/*"
+            getContent.launch(intent)
+
+            //val intentImage = Intent(Intent.ACTION_PICK)
+            //intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
+            //getContent.launch(intentImage)
+            //profileCheck = true
         }
+
 
         // 회원가입 버튼 이벤트
         binding.btnSignUp.setOnClickListener {
@@ -164,14 +186,13 @@ class SignUpActivity : AppCompatActivity() {
             mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {     // 회원가입 성공시
-                        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
                         val user = Firebase.auth.currentUser
                         val userId = user?.uid
-
                         val intent: Intent = Intent(this@SignUpActivity, LoginActivity::class.java)
-                        startActivity(intent)
 
+                        //storage에 이미지 업로드
                         Upload(userId!!)
+                        //firebase에 사용자 정보 업로드
                         addUserDatabase(
                             email,
                             mAuth.currentUser?.uid!!,
@@ -182,6 +203,9 @@ class SignUpActivity : AppCompatActivity() {
                             mbti,
                             intro
                         )
+                        //로그인 화면으로 전환하고 회원가입 성공 메세지 띄우기
+                        startActivity(intent)
+                        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
 
                     } else {                    // 회원가입 실패시
                         Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()

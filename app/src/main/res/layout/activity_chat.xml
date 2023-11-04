@@ -42,8 +42,20 @@
     </RelativeLayout>
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_above="@id/fabSimpleChat"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/fab"
+        android:textColor="#7A7A7A"
+        android:src="@android:drawable/ic_input_add" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab"
+        android:id="@+id/fabSimpleChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/input_layout"
@@ -52,8 +64,7 @@
         android:backgroundTint="@color/fab"
         android:text="간편채팅"
         android:textColor="#7A7A7A"
-        app:icon="@drawable/icon_chat"
-         />
+        app:icon="@drawable/icon_chat" />
 
     <LinearLayout
         android:id="@+id/input_layout"

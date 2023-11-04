@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mAuth = FirebaseAuth.getInstance()
+
         //액션바 설정
         supportActionBar?.title = "친구들"
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFF7CAC9")))
@@ -50,13 +52,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //생성할 메뉴를 지정하는 함수
+    //액션바에 메뉴버튼 추가
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    //메뉴 아이템 선택 기능 함수
+    //메뉴 버튼 선택하면 로그아웃하기
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.logout) {
             mAuth.signOut()     //로그아웃

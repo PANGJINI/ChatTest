@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentUserListBinding
-import com.example.myapplication.databinding.UserListLayoutBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -26,7 +25,6 @@ import com.google.firebase.ktx.Firebase
 class FragmentUserList : Fragment() {
 
     lateinit var binding: FragmentUserListBinding
-    lateinit var _binding: UserListLayoutBinding
     lateinit var userAdapter: UserAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -42,7 +40,6 @@ class FragmentUserList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUserListBinding.inflate(inflater)
-        _binding = UserListLayoutBinding.inflate(layoutInflater)
         mAuth = Firebase.auth   //인증 초기화
         mDbRef = Firebase.database.reference    //DB초기화
         userList = ArrayList()  //리스트 초기화

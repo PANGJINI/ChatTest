@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentChatListBinding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 /*
@@ -15,6 +18,8 @@ import com.example.myapplication.databinding.FragmentChatListBinding
 class FragmentChatList : Fragment() {
 
     lateinit var binding: FragmentChatListBinding
+    lateinit var mDbRef: DatabaseReference
+    //lateinit var chatRoomAdapter: ChatRoomAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +33,10 @@ class FragmentChatList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentChatListBinding.inflate(inflater)
+        mDbRef = Firebase.database.reference
 
-        //어오 배고파
-
+        binding.chatRecyclerView.layoutManager = LinearLayoutManager(context)
+        //binding.chatRecyclerView.adapter = chatRoomAdapter
 
         return binding.root
     }

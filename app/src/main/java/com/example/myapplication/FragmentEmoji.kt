@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.FragmentMemeBinding
+import com.example.myapplication.databinding.FragmentEmojiBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -21,10 +21,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
-class FragmentMeme : Fragment() {
+class FragmentEmoji : Fragment() {
 
-    lateinit var binding: FragmentMemeBinding
-    private lateinit var memeList: ArrayList<SimpleChatDataModel>
+    lateinit var binding: FragmentEmojiBinding
+    private lateinit var emojiList: ArrayList<SimpleChatDataModel>
     lateinit var adapter: MyAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -33,25 +33,25 @@ class FragmentMeme : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMemeBinding.inflate(inflater)
+        binding = FragmentEmojiBinding.inflate(inflater)
         mAuth = Firebase.auth
         mDbRef = Firebase.database.reference
-        memeList = ArrayList()
-        adapter = MyAdapter(context, memeList)
+        emojiList = ArrayList()
+        adapter = MyAdapter(context, emojiList)
 
-        binding.memeRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.memeRecyclerView.adapter = adapter
+        binding.emojiRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.emojiRecyclerView.adapter = adapter
 
         //DB에 있는 간편채팅 데이터 가져와서 리스트에 넣기
-        mDbRef.child("simpleChat").child("meme")
+        mDbRef.child("simpleChat").child("emoji")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (postSnapshot in snapshot.children) {
                         val data = postSnapshot.getValue(SimpleChatDataModel::class.java)
                         if (data != null) {
                             //데이터가 새로 추가될 때 이미 리스트에 있는 값이면 추가하지 않음
-                            if(!memeList.contains(data)) {
-                                memeList.add(data!!)
+                            if(!emojiList.contains(data)) {
+                                emojiList.add(data!!)
                             }
                         }
                     }
@@ -64,12 +64,12 @@ class FragmentMeme : Fragment() {
             })
 
         return binding.root
-    }//onCreateView 끝
+    }//onCreateView
 
 
     class MyAdapter(
         private val context: Context?,
-        private val memeList: ArrayList<SimpleChatDataModel>
+        private val emojiList: ArrayList<SimpleChatDataModel>
     ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
         inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val textView: TextView = itemView.findViewById(R.id.item_data)
@@ -82,13 +82,12 @@ class FragmentMeme : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return memeList.size
+            return emojiList.size
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val currentData = memeList[position].chatData
+            val currentData = emojiList[position].chatData
             holder.textView.text = currentData
-
             //리사이클러뷰를 선택했을 때 editText에 텍스트 넣기
             holder.itemView.setOnClickListener{
                 (context as ChatActivity).binding.messageEdit.setText(currentData)
@@ -101,6 +100,4 @@ class FragmentMeme : Fragment() {
         }
 
     }//어댑터 끝
-
-
 }

@@ -3,8 +3,8 @@ package com.example.myapplication
 import org.w3c.dom.Comment
 
 class Message(
-    var message: String?,
-    var sendId: String?,
+    var message: String?,   //메시지 내용
+    var sendId: String?,    //접속자 uid
     var time: String?) {
     constructor():this("","", "")
 }

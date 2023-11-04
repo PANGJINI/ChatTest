@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".DataAddActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="💜 카테고리를 선택하세요."
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dp"/>
+    <Spinner
+        android:id="@+id/spinner_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="😎 추가할 데이터를 입력하세요."
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <!--여기에 스피너로 카테고리 추가해야 할듯함-->
+    <EditText
+        android:id="@+id/editAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="내용"/>
+
+</LinearLayout>

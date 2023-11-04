@@ -19,7 +19,7 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view: View = LayoutInflater.from(context).
-            inflate(R.layout.user_list_layout, parent, false)
+            inflate(R.layout.item_userlist, parent, false)
         return UserViewHolder(view)
     }
 
@@ -66,7 +66,6 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
         val userIntroduction: TextView = itemView.findViewById(R.id.user_introduction)
         val circleView: CircleImageView = itemView.findViewById(R.id.circleView)
         val blueColor = ContextCompat.getColor(itemView.context, R.color.blue)
-        val pinkColor = ContextCompat.getColor(itemView.context, R.color.pink)
 
         fun borderChange (user: User) {
             if (user.gender == "남성") circleView.borderColor = blueColor

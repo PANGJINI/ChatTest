@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentChatList">
+    tools:context=".FragmentEmoji">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_recyclerView"
+        android:id="@+id/emojiRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem=""
-        />
+        tools:listitem="@layout/item_simple_chat_data"/>
 
 </LinearLayout>

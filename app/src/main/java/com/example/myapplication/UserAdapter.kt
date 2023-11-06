@@ -49,8 +49,8 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
             //현재 유저의 이름, uid값을 chatActivity로 넘겨줌
-            intent.putExtra("name", currentUser.name)
-            intent.putExtra("uId", currentUser.uId)
+            intent.putExtra("receiverName", currentUser.name)   //현재 클릭한 유저 이름이 받는 이름이 됨
+            intent.putExtra("receiverId", currentUser.uId)      //현재 클릭한 유저 uid가 받는사람 uid
             context!!.startActivity(intent)
         }
     }

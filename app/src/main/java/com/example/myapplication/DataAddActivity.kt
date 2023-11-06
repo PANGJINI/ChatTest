@@ -30,7 +30,7 @@ class DataAddActivity : AppCompatActivity() {
 
         //카테고리 선택하는 스피너 설정
         category = ""
-        val categoryList = arrayOf("주접&플러팅", "밈", "이모지", "텍대")
+        val categoryList = arrayOf("주접&플러팅", "밈", "특수문자","이모지", "텍대")
         var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, categoryList)
         binding.spinnerCategory.adapter = adapter
 

@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
@@ -24,7 +26,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
-    companion object { val ADD_ACTIVITY_REQUEST_CODE = 1 }
+    companion object {
+        val ADD_ACTIVITY_REQUEST_CODE = 1
+    }
 
     //뷰바인딩
     lateinit var binding: ActivityChatBinding
@@ -40,10 +44,13 @@ class ChatActivity : AppCompatActivity() {
     lateinit var mDbRef: DatabaseReference
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        mAuth = FirebaseAuth.getInstance()
+        mDbRef = FirebaseDatabase.getInstance().reference
 
         //뒤로가기 버튼
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -56,28 +63,38 @@ class ChatActivity : AppCompatActivity() {
 
         //탭과 뷰페이저 연결하기
         //var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "텍대", "이모지", "밸런스게임", "논쟁")
-        var tabTextList = listOf("주접&플러팅", "밈", "이모지", "텍대")
+        var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "이모지", "텍대")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
         }.attach()
 
-        //리사이클러뷰에 어댑터 연결하기
+        //채팅 리사이클러뷰에 어댑터 연결하기
         messageList = ArrayList()
         val messageAdapter: MessageAdapter = MessageAdapter(this, messageList)
         binding.chatRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.chatRecyclerView.adapter = messageAdapter
 
+
         //유저리스트에서 넘어온 상대방의 name, uId 데이터를 receiver-- 변수에 담기
-        receiverName = intent.getStringExtra("name").toString()
-        receiverUid = intent.getStringExtra("uId").toString()
+        receiverName = intent.getStringExtra("receiverName").toString()
+        receiverUid = intent.getStringExtra("receiverId").toString()
         //액션바에 상대방 이름을 보여주기
         supportActionBar?.title = receiverName
 
-        mAuth = FirebaseAuth.getInstance()
-        mDbRef = FirebaseDatabase.getInstance().reference
 
-        //접속자 uid, 채팅 전송 시간
+        //접속자 uid, 접속자 이름, 채팅 전송 시간
         val senderUid = mAuth.currentUser?.uid
+        var senderName = ""
+        if (senderUid != null) {
+            mDbRef.child("user").child(senderUid).child("name")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        senderName = snapshot.getValue(String::class.java).toString()
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+        }
         val time = System.currentTimeMillis()
         val currentTime = SimpleDateFormat("HH:mm").format(Date(time)).toString()
 
@@ -88,7 +105,7 @@ class ChatActivity : AppCompatActivity() {
         //메세지 전송 이벤트
         binding.sendBtn.setOnClickListener{
             val message = binding.messageEdit.text.toString()
-            val messageObject = Message(message, senderUid, currentTime)
+            val messageObject = Message(message, senderUid, receiverUid, senderName, receiverName, currentTime)
 
             //디비에 메시지 데이터 저장
             mDbRef.child("chats").child(senderRoom).child("messages").push()
@@ -113,10 +130,11 @@ class ChatActivity : AppCompatActivity() {
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     messageList.clear()
-                    for(postSnapshat in snapshot.children) {
-                        val message = postSnapshat.getValue(Message::class.java)
+                    for(postSnapshot in snapshot.children) {
+                        val message = postSnapshot.getValue(Message::class.java)
                         messageList.add(message!!)
                     }
+                    Log.e("채팅", "채팅액티비티 messageList ===== ${messageList}")
                     messageAdapter.notifyDataSetChanged()
                 }
 
@@ -170,6 +188,10 @@ class ChatActivity : AppCompatActivity() {
                         mDbRef.child("simpleChat").child("meme")
                             .push().setValue(SimpleChatDataModel(newString))
                     }
+                    "특수문자" -> {
+                        mDbRef.child("simpleChat").child("specialChar")
+                            .push().setValue(SimpleChatDataModel(newString))
+                    }
                     "텍대" -> {
                         mDbRef.child("simpleChat").child("textReplace")
                             .push().setValue(SimpleChatDataModel(newString))
@@ -189,7 +211,7 @@ class ChatActivity : AppCompatActivity() {
     //간편채팅 프래그먼트들을 연결해주는 뷰페이저 어댑터
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentFlirting(), FragmentMeme(), FragmentEmoji(), FragmentTextReplace())
+        val fragments = listOf<Fragment>(FragmentFlirting(), FragmentMeme(), FragmentSpecialChar(),FragmentEmoji(), FragmentTextReplace())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size

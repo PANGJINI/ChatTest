@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatList())
+        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size

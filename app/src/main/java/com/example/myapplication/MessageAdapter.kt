@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //현재 메시지
         val currentMessage = messageList[position]
+        Log.e("채팅", "어탭터===== ${messageList[position].message}")
 
         if(holder.javaClass == SendViewHolder::class.java) {    //보내는 데이터
             val viewHolder = holder as SendViewHolder

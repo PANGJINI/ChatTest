@@ -43,26 +43,14 @@ class SignUpActivity : AppCompatActivity() {
     private val getContent = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult())
     {
-        try{
-            //이미지 로딩
-            var inputStream = contentResolver.openInputStream(it.data!!.data!!)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream!!.close()
-            //inputStream = null
-            bitmap?.let { binding.userImageView.setImageBitmap(bitmap) } ?: let{
-                Log.e("프로필", "프로필 이미지 삽입되었음")
-            }
-        } catch (e:Exception) {
-            e.printStackTrace()
+            result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+            imageUri = result.data?.data    //이미지 경로 원본
+            binding.userImageView.setImageURI(imageUri)   //이미지 뷰를 바꿈
+            Log.d("signUp","프로필 바꾸기 성공")
+        } else{
+            Log.d("signUp", "프로필 바꾸기 실패")
         }
-    //        result: ActivityResult ->
-//        if (result.resultCode == RESULT_OK) {
-//            imageUri = result.data?.data    //이미지 경로 원본
-//            binding.userImageView.setImageURI(imageUri)   //이미지 뷰를 바꿈
-//            Log.d("image","프로필 바꾸기 성공")
-//        } else{
-//            Log.d("image", "프로필 바꾸기 실패")
-//        }
     }
 
 
@@ -230,12 +218,11 @@ class SignUpActivity : AppCompatActivity() {
 
 
     fun Upload(userId: String) {
-        //var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         var imgFileName = "IMAGE_${userId}_.png"
         var storageRef = storage?.reference?.child("images")?.child(imgFileName)
 
         storageRef?.putFile(imageUri!!)?.addOnSuccessListener {
-            Log.d("하아", "스토리지에 이미지 업로드 성공")
+            Log.e("signUp", "스토리지에 이미지 업로드 성공")
         }
     }
 

@@ -18,10 +18,11 @@
                 android:id="@+id/userImageView"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/icon_user"
+                android:scaleType="centerInside"
+                android:src="@drawable/profile"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"/>
             <EditText
                 android:id="@+id/edit_email"
                 android:inputType="textEmailAddress"
@@ -53,22 +54,27 @@
                 android:id="@+id/edit_gender"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💜성별"
+                    android:text="💗 성별"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:layout_marginRight="5dp"/>
                 <RadioButton
                     android:id="@+id/edit_male"
                     android:text="남성"
+                    android:layout_marginLeft="40dp"
+                    android:buttonTint="@color/pink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <RadioButton
                     android:id="@+id/edit_female"
                     android:text="여성"
+                    android:layout_marginLeft="40dp"
+                    android:buttonTint="@color/pink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </RadioGroup>
@@ -77,85 +83,120 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="15dp">
+                android:layout_marginBottom="10dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💜지역"
+                    android:text="💗 지역"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:layout_marginRight="5dp"/>
                 <Spinner
                     android:id="@+id/spinner_area"
+                    android:layout_marginLeft="40dp"
                     android:layout_width="match_parent"
+                    android:layout_marginBottom="15dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="💜MBTI"
+                android:text="💗 MBTI"
                 android:textSize="15sp"
+                android:layout_marginBottom="5dp"
                 android:textStyle="bold" />
             <TableLayout
                 android:id="@+id/edit_mbti"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp">
                 <TableRow>
                     <CheckBox
                         android:id="@+id/mbti1"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ISTJ"/>
                     <CheckBox
                         android:id="@+id/mbti2"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ISFJ"/>
                     <CheckBox
                         android:id="@+id/mbti3"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="INFJ"/>
                     <CheckBox
                         android:id="@+id/mbti4"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="INTJ"/>
                 </TableRow>
                 <TableRow>
                     <CheckBox
                         android:id="@+id/mbti5"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ISTP"/>
                     <CheckBox
                         android:id="@+id/mbti6"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ISFP"/>
                     <CheckBox
                         android:id="@+id/mbti7"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="INFP"/>
                     <CheckBox
                         android:id="@+id/mbti8"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="INTP"/>
                 </TableRow>
                 <TableRow>
                     <CheckBox
                         android:id="@+id/mbti9"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ESTP"/>
                     <CheckBox
                         android:id="@+id/mbti10"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ESFP"/>
                     <CheckBox
                         android:id="@+id/mbti11"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ENFP"/>
                     <CheckBox
                         android:id="@+id/mbti12"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ENTP"/>
                 </TableRow>
                 <TableRow>
                     <CheckBox
                         android:id="@+id/mbti13"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ESTJ"/>
                     <CheckBox
                         android:id="@+id/mbti14"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ESFJ"/>
                     <CheckBox
                         android:id="@+id/mbti15"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ENFJ"/>
                     <CheckBox
                         android:id="@+id/mbti16"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/pink"
                         android:text="ENTJ"/>
                 </TableRow>
             </TableLayout>
@@ -166,6 +207,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="회원가입"
+                android:backgroundTint="@color/sendMessage"
+                android:textColor="@color/black"
                 android:textSize="15sp"/>
 
         </LinearLayout>

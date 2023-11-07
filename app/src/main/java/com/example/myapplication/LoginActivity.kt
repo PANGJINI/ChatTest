@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -21,6 +22,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mAuth = Firebase.auth
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.pink)
 
         // 회원가입 버튼 이벤트
         binding.btnSignUp.setOnClickListener {

@@ -28,9 +28,9 @@ class FragmentChatRoomList : Fragment() {
     lateinit var binding: FragmentChatRoomListBinding
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
+    lateinit var chatRoomList: ArrayList<Message>   //현재 유저가 포함된 채팅방 목록
+    var onChatUser: ArrayList<String> = ArrayList()
     lateinit var adapter: ChatRoomAdapter
-    lateinit var chatRoomList: ArrayList<Message>
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,8 +63,22 @@ class FragmentChatRoomList : Fragment() {
                                 //chatRoomList.clear()
                                 for (postSnapshot in snapshot.children) {
                                     val data = postSnapshot.getValue(Message::class.java)
-                                    chatRoomList.add(data!!)
-                                    Log.e("채팅", "센더룸 : $senderRoom ====== 메시지 ${data.message}")
+
+                                    if(data?.sendId == currentUid) {
+                                        if(!onChatUser.contains(data.receiveName)) {
+                                            onChatUser.add(data.receiveName!!)
+                                            chatRoomList.add(data)
+                                            Log.e("채팅", "추가된 내용 : ${data.message}")
+                                        }
+                                    } else {
+                                        if(!onChatUser.contains(data?.sendName)) {
+                                            onChatUser.add(data?.sendName!!)
+                                            chatRoomList.add(data)
+                                            Log.e("채팅", "추가된 내용 : ${data.message}")
+                                        }
+                                    }
+
+
                                 }
                                 Log.e("채팅", "프래그먼트에서 chatRoomList ===== ${chatRoomList}")
                                 adapter.notifyDataSetChanged()

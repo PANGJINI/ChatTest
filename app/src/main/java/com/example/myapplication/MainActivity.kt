@@ -80,16 +80,5 @@ class MainActivity : AppCompatActivity() {
         override fun createFragment(position: Int): Fragment = fragments[position]
 
     }
-
-    //메뉴 버튼 선택하면 로그아웃하기
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if (item.itemId == R.id.logout) {
-//            mAuth.signOut()     //로그아웃
-//            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//            return true
-//        }
-//        return true
-//    }
+    
 }

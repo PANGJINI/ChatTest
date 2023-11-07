@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="💜 카테고리를 선택하세요."
+        android:text="💗 카테고리를 선택하세요."
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="5dp"/>

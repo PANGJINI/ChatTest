@@ -6,33 +6,62 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/logo_7"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="20dp"/>
+
     <EditText
         android:id="@+id/edit_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
         android:inputType="textEmailAddress"
         android:drawableLeft="@drawable/icon_email_resize"
+        android:background="@drawable/login_border"
+        android:paddingStart="20dp"
         android:drawablePadding="10dp"
+        android:layout_marginBottom="20dp"
         android:hint="email"/>
     <EditText
         android:id="@+id/edit_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
         android:inputType="textPassword"
         android:drawableLeft="@drawable/icon_pw_resize"
+        android:background="@drawable/login_border"
+        android:paddingStart="20dp"
         android:drawablePadding="10dp"
+        android:layout_marginBottom="20dp"
         android:hint="password"/>
-    <Button
-        android:id="@+id/btn_login"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="LOGIN"/>
-    <Button
-        android:id="@+id/btn_signUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="SIGN UP"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center">
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/sendMessage"
+            android:textColor="@color/black"
+            android:layout_marginRight="20dp"
+            android:text="LOGIN"/>
+        <Button
+            android:id="@+id/btn_signUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/sendMessage"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:text="SIGN UP"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -35,11 +35,12 @@ class MainActivity : AppCompatActivity() {
 
         var tabIcons = listOf(
             R.drawable.icon_userlist,
-            R.drawable.icon_chat
+            R.drawable.icon_chat,
+            R.drawable.icon_balance
         )
 
         //탭과 뷰페이저 연결하기
-        var tabTextList = listOf("사용자", "채팅방")
+        var tabTextList = listOf("사용자", "채팅방", "밸런스게임")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
             tab.setIcon(tabIcons[position])
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList())
+        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList(), FragmentBalance())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size

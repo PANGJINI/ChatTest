@@ -14,20 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
         tools:targetApi="31">
+        <activity
+            android:name=".CommentTestActivity"
+            android:exported="true" >
 
+        </activity>
         <activity
             android:name=".ProfileActivity"
-            android:parentActivityName=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".DataAddActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".ChatActivity"
             android:exported="false"

@@ -80,5 +80,5 @@ class MainActivity : AppCompatActivity() {
         override fun createFragment(position: Int): Fragment = fragments[position]
 
     }
-    
+
 }

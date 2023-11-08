@@ -106,6 +106,7 @@ class ChatActivity : AppCompatActivity() {
         binding.sendBtn.setOnClickListener{
             val message = binding.messageEdit.text.toString()
             val messageObject = Message(message, senderUid, receiverUid, senderName, receiverName, currentTime)
+            //val messageObject = Message(message, senderUid, currentTime)
 
             //디비에 메시지 데이터 저장
             mDbRef.child("chats").child(senderRoom).child("messages").push()

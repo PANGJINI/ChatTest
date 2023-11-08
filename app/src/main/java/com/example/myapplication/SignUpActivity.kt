@@ -39,6 +39,7 @@ class SignUpActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
 
 
+
     //갤러리에서 받아온 이미지로 이미지뷰 설정하기
     private val getContent = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult())
@@ -59,6 +60,8 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //뒤로가기 버튼
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //액션바 설정
         supportActionBar?.title = "회원가입"
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFF7CAC9")))

@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -25,24 +27,52 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mAuth = FirebaseAuth.getInstance()
+        window.statusBarColor = ContextCompat.getColor(this, R.color.pink)
 
-        //액션바 설정
-        supportActionBar?.title = "친구들"
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFF7CAC9")))
 
         //뷰페이저에 어댑터 연결하기
         binding.viewpager.adapter = ViewPagerAdapter(this)
 
+        var tabIcons = listOf(
+            R.drawable.icon_userlist,
+            R.drawable.icon_chat,
+            R.drawable.icon_balance
+        )
+
         //탭과 뷰페이저 연결하기
-        var tabTextList = listOf("사용자", "채팅방")
+        var tabTextList = listOf("사용자", "채팅방", "밸런스게임")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
+            tab.setIcon(tabIcons[position])
+
         }.attach()
+
+        //버튼 누르면 로그아웃하기
+        binding.btnLogout.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("로그아웃")
+            builder.setMessage("정말 로그아웃하시겠습니까?")
+
+            builder.setPositiveButton("로그아웃") { dialog, which ->
+                mAuth.signOut() // 로그아웃
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            builder.setNegativeButton("취소") { dialog, which ->
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
+        }
+
     }//onCreate 끝
 
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList())
+        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList(), FragmentBalance())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size
@@ -52,21 +82,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //액션바에 메뉴버튼 추가
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    //메뉴 버튼 선택하면 로그아웃하기
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout) {
-//            mAuth.signOut()     //로그아웃
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-            return true
-        }
-        return true
-    }
 }

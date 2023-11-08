@@ -45,13 +45,18 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
         //사용자 성별이 남성이면 이미지뷰 색상을 파랑으로 바꿔줌
         holder.borderChange(currentUser)
 
-        //유저리스트 클릭 이벤트
+        //유저리스트 선택하면 프로필 액티비티로 전환
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, ChatActivity::class.java)
-            //현재 유저의 이름, uid값을 chatActivity로 넘겨줌
-            intent.putExtra("receiverName", currentUser.name)   //현재 클릭한 유저 이름이 받는 이름이 됨
-            intent.putExtra("receiverId", currentUser.uId)      //현재 클릭한 유저 uid가 받는사람 uid
+//            val intent = Intent(context, ChatActivity::class.java)
+//            //현재 유저의 이름, uid값을 chatActivity로 넘겨줌
+//            intent.putExtra("receiverName", currentUser.name)   //현재 클릭한 유저 이름이 받는 이름이 됨
+//            intent.putExtra("receiverId", currentUser.uId)      //현재 클릭한 유저 uid가 받는사람 uid
+//            context!!.startActivity(intent)
+            val intent = Intent(context, ProfileActivity::class.java)
+            intent.putExtra("receiverId", currentUser.uId)
+            intent.putExtra("receiverName", currentUser.name)
             context!!.startActivity(intent)
+
         }
     }
 

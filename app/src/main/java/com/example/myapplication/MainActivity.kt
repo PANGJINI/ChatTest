@@ -32,6 +32,15 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.pink)
 
 
+        // 현재 사용자의 인증 상태를 확인
+        val currentUser = mAuth.currentUser
+        if (currentUser == null) {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+            return //로그인되어 있지 않으면 이후의 코드 실행하지 않음
+        }
+
         //뷰페이저에 어댑터 연결하기
         binding.viewpager.adapter = ViewPagerAdapter(this)
 

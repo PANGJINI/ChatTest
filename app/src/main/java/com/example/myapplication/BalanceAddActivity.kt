@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.example.myapplication.databinding.ActivityBalanceAddBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -67,17 +68,25 @@ class BalanceAddActivity : AppCompatActivity() {
             val balanceObject = BalanceGameDataModel(bal1, bal2, listOf(0, 0),currentUser,
                 postUserName, postUserGender, currentTime, listOf(""))
 
-            //db에 밸런스게임 추가하기
-            mDbRef.child("BalanceGame").push()
-                .setValue(balanceObject).addOnSuccessListener {
-                    Toast.makeText(this, "밸런스게임이 생성되었습니다.", Toast.LENGTH_LONG).show()
-                }
+            if(bal1 == ""){
+                Toast.makeText(this, "첫 번째 값이 비어있어요.", Toast.LENGTH_SHORT).show()
+            } else if (bal2 == "") {
+                Toast.makeText(this, "두 번째 값이 비어있어요.", Toast.LENGTH_SHORT).show()
+            } else {
+                //db에 밸런스게임 추가하기
+                mDbRef.child("BalanceGame").push()
+                    .setValue(balanceObject).addOnSuccessListener {
+                        Toast.makeText(this, "밸런스게임이 생성되었습니다.", Toast.LENGTH_LONG).show()
+                    }
 
-            //main 액티비티의 밸런스게임 탭으로 화면전환하기
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            intent.putExtra("switch_to_balance_fragment", true)
-            startActivity(intent)
+                //main 액티비티의 밸런스게임 탭으로 화면전환하기
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                intent.putExtra("switch_to_balance_fragment", true)
+                startActivity(intent)
+            }
+
+
         }
     }//onCreate 끝
 

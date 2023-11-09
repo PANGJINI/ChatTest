@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.example.myapplication.databinding.ActivityDataAddBinding
 
 class DataAddActivity : AppCompatActivity() {
@@ -54,12 +55,16 @@ class DataAddActivity : AppCompatActivity() {
     //'저장' 메뉴가 선택됐을 때 다시 chat activity로 돌아감
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.menu_add_save) {
-            val intent = intent
-            intent.putExtra("category", category)
-            intent.putExtra("chatData", binding.editAdd.text.toString())
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-            return true
+            if(binding.editAdd.text.toString() == "") {
+                Toast.makeText(this, "내용을 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = intent
+                intent.putExtra("category", category)
+                intent.putExtra("chatData", binding.editAdd.text.toString())
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+                return true
+            }
         }
         return true
     }

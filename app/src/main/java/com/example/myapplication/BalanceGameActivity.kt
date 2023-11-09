@@ -226,11 +226,16 @@ class BalanceGameActivity : AppCompatActivity() {
             val content = binding.editComment.text.toString()
             val commentObject = Comments(content, currentUser, writerName, currentTime)
 
-            //디비에 메시지 데이터 저장
-            mDbRef.child("Comments").child(gameRoom).push()
-                .setValue(commentObject).addOnSuccessListener {
-                }
-            binding.editComment.setText("")
+            if(content == "") {
+
+            } else {
+                //디비에 메시지 데이터 저장
+                mDbRef.child("Comments").child(gameRoom).push()
+                    .setValue(commentObject).addOnSuccessListener {
+                    }
+                binding.editComment.setText("")
+            }
+
         }
 
 

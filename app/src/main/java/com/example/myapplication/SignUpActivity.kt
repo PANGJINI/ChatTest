@@ -113,15 +113,18 @@ class SignUpActivity : AppCompatActivity() {
             val age = binding.editAge.text.toString()
             val intro = binding.editIntroduction.text.toString()
 
-//            // 이미지 파일 경로
-//            val imagePath = "users/${mAuth.currentUser?.uid}/profile.jpg"
-//            val imageRef = mDbRef.child(imagePath)
+
 
             val genderId = binding.editGender.checkedRadioButtonId
-            // 선택된 라디오 버튼의 ID로 라디오 버튼 찾기
-            val genderS = findViewById<RadioButton>(genderId)
-            // 선택된 라디오 버튼의 텍스트 읽어오기
-            val gender = genderS.text.toString()
+            var gender = ""
+            if(genderId == -1) {
+                Toast.makeText(this, "회원가입 실패 :: 성별을 선택하세요.", Toast.LENGTH_SHORT).show()
+            } else {
+                // 선택된 라디오 버튼의 ID로 라디오 버튼 찾기
+                val genderS = findViewById<RadioButton>(genderId)
+                // 선택된 라디오 버튼의 텍스트 읽어오기
+                gender = genderS.text.toString()
+            }
 
             val mbti: MutableList<String> = mutableListOf()
             if (binding.mbti1.isChecked) {
@@ -174,39 +177,37 @@ class SignUpActivity : AppCompatActivity() {
             }
 
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {     // 회원가입 성공시
-                        val user = Firebase.auth.currentUser
-                        val userId = user?.uid
-                        val intent: Intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+            if (binding.editEmail.text.isBlank() ||
+                binding.editPassword.text.isBlank() ||
+                binding.editName.text.isBlank() ||
+                binding.editAge.text.isBlank() ||
+                binding.editIntroduction.text.isBlank() ||
+                genderId == -1 ||
+                imageUri == null
+            ) {
+                Toast.makeText(this, "모든 정보를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            } else {
+                //모든 항목이 입력된 경우에 회원가입 진행
+                mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {     // 회원가입 성공시
+                            val user = Firebase.auth.currentUser
+                            val userId = user?.uid
+                            val userObject = User(email, mAuth.currentUser?.uid!!, name, age, gender, area, mbti.toString(), intro)
 
-                        //storage에 이미지 업로드
-                        Upload(userId!!)
-                        //firebase에 사용자 정보 업로드
-                        addUserDatabase(
-                            email,
-                            mAuth.currentUser?.uid!!,
-                            name,
-                            age,
-                            gender,
-                            area,
-                            mbti,
-                            intro
-                        )
-                        //로그인 화면으로 전환하고 회원가입 성공 메세지 띄우기
-                        startActivity(intent)
-                        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
+                            //storage에 이미지 업로드
+                            Upload(userId!!, userObject)
 
-                    } else {                    // 회원가입 실패시
-                        Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()
-                        Log.d("signUp", "ERROR ::::: ${task.exception}")
+                        } else {                   // 회원가입 실패시
+                            Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()
+                            Log.d("signUp", "ERROR ::::: ${task.exception}")
+                        }
                     }
-                }
-        }
+            }
+        }//회원가입 버튼 onClickListener 끝
 
 
-    }
+    }//onCreate 끝
 
 //    companion object {
 //        private const val IMAGE_PICK_CODE = 1000
@@ -220,31 +221,28 @@ class SignUpActivity : AppCompatActivity() {
 //    }
 
 
-    fun Upload(userId: String) {
+    fun Upload(userId: String, userObject: User) {
         var imgFileName = "IMAGE_${userId}_.png"
         var storageRef = storage?.reference?.child("images")?.child(imgFileName)
 
-        storageRef?.putFile(imageUri!!)?.addOnSuccessListener {
-            Log.e("signUp", "스토리지에 이미지 업로드 성공")
+        if(imageUri == null) {
+            Toast.makeText(this, "프로필 이미지를 등록하세요.", Toast.LENGTH_LONG).show()
+        } else {
+            //이미지 업로드에 성공한 경우
+            storageRef?.putFile(imageUri!!)?.addOnSuccessListener {
+                //DB에 회원정보 올리기
+                mDbRef.child("user").child(userId).setValue(userObject)
+                Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
+                //로그인 화면으로 전환
+                val intent: Intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                startActivity(intent)
+            }?.addOnFailureListener { exception ->
+                Log.e("signUp", "스토리지에 이미지 업로드 실패: $exception")
+                Toast.makeText(this, "회원가입 실패 : 이미지 업로드에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
+
+
     }
 
-    //addUserDatabase : 데이터베이스에 사용자 저장하는 함수
-    private fun addUserDatabase(
-        email: String,
-        uId: String,
-        name: String,
-        age: String,
-        gender: String,
-        area: String,
-        mbti: MutableList<String>,
-        introduction: String
-    ) {
-        mDbRef.child("user").child(uId).setValue(
-            User(
-                email, uId, name, age, gender, area,
-                mbti.toString(), introduction
-            )
-        )
-    }
 }

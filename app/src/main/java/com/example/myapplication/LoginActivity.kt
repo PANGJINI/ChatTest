@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -43,6 +44,14 @@ class LoginActivity : AppCompatActivity() {
                 mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {     //로그인 성공시
+
+                            // ID 토큰을 가져와 SharedPreferences에 저장 (세션 유지)
+                            val idToken = task.result?.user?.getIdToken(false)?.result?.token
+                            val sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putString("idToken", idToken)
+                            editor.apply()
+
                             val intent: Intent =
                                 Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)

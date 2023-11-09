@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".BalanceGameActivity">
+
+    <!-- 밸런스 게임 관련 부분 -->
+    <LinearLayout
+        android:id="@+id/voteLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- 게시자 사진, 이름, 게시물 작성시간 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/balanceImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/icon_user"
+                app:civ_border_color="@color/pink"
+                app:civ_border_width="2dp" />
+            <TextView
+                android:id="@+id/balanceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/balanceImage"
+                android:text="이름"
+                android:textColor="@color/textColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/balanceTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="작성시간"
+                android:textColor="@color/textColor"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <!-- 밸런스게임 타이틀 -->
+        <TextView
+            android:id="@+id/balanceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:text="밸겜 타이틀"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- 밸런스게임 투표화면 -->
+        <LinearLayout
+            android:id="@+id/frameVote"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@color/receiveMessage"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="visible">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="투표 후 결과 확인이 가능해용" />
+            <Button
+                android:id="@+id/voteBtn1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="항목1" />
+            <Button
+                android:id="@+id/voteBtn2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="항목2" />
+        </LinearLayout>
+
+        <!-- 밸런스게임 투표 결과 확인 -->
+        <!-- ⭐디자인 완료 후에 visibility "gone"으로 바꿔주세요 -->
+        <LinearLayout
+            android:id="@+id/frameVoteResult"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@color/receiveMessage"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="투표결과"/>
+            <TextView
+                android:id="@+id/voteCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체 투표 수"/>
+            <TextView
+                android:id="@+id/voteContent1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="항목1"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/voteCount1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="항목1 투표수"
+                    android:layout_marginRight="10dp"/>
+                <ProgressBar
+                    android:id="@+id/voteProgress1"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10"
+                    android:progress="0"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/voteContent2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="항목2"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/voteCount2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="항목2 투표수"
+                    android:layout_marginRight="10dp"/>
+                <ProgressBar
+                    android:id="@+id/voteProgress2"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10"
+                    android:progress="0"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 댓글 부분 -->
+    <!-- 댓글 리사이클러뷰 형태 수정 원하면 item_comments.xml -->
+    <LinearLayout
+        android:id="@+id/commentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/editLayout"
+        android:layout_below="@id/voteLayout"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pink"
+            android:padding="5dp"
+            android:text="댓글"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/comment_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_comments" />
+    </LinearLayout>
+
+    <!-- 댓글 입력창, 전송버튼 -->
+    <LinearLayout
+        android:id="@+id/editLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/editComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:hint="댓글을 입력하세요.." />
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="작성" />
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var viewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,11 @@ class MainActivity : AppCompatActivity() {
             tab.setIcon(tabIcons[position])
 
         }.attach()
+
+        val switchToBalanceFragment = intent.getBooleanExtra("switch_to_balance_fragment", false)
+        if (switchToBalanceFragment) {
+            switchToBalanceFragment()
+        }
 
         //버튼 누르면 로그아웃하기
         binding.btnLogout.setOnClickListener {
@@ -80,6 +87,10 @@ class MainActivity : AppCompatActivity() {
         //프래그먼트 객체 얻기
         override fun createFragment(position: Int): Fragment = fragments[position]
 
+    }
+
+    fun switchToBalanceFragment() {
+        viewPager.currentItem = 2   //2번 인덱스 = 밸런스게임 프래그먼트
     }
 
 }

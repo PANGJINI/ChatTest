@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
 import java.util.Date
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -40,7 +41,7 @@ class BalanceGameActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mDbRef: DatabaseReference
     lateinit var commentList: ArrayList<Comments>   //댓글을 담을 리스트
-    lateinit var keyList: ArrayList<String>
+    lateinit var commentKeyList: ArrayList<String>
     lateinit var adapter: MyAdapter
     lateinit var gameRoom: String
 
@@ -56,12 +57,10 @@ class BalanceGameActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().reference
-
         val currentUser = mAuth.currentUser?.uid
-        gameRoom = "1번밸겜"
-
 
         //밸런스게임 목록 리사이클러뷰에서 받아온 데이터
+        gameRoom = intent.getStringExtra("gameRoomId").toString()
         val title = intent.getStringExtra("balTitle").toString()
         val bal1 = intent.getStringExtra("bal1").toString()
         val bal2 = intent.getStringExtra("bal2").toString()
@@ -81,6 +80,9 @@ class BalanceGameActivity : AppCompatActivity() {
                     .load(task.result)
                     .into(binding.balanceImage)
             }
+        }
+        if (postUserGender == "남성") {
+            binding.balanceImage.borderColor = getResources().getColor(R.color.blue)
         }
         binding.balanceName.text = postUserName
         binding.balanceTime.text = postTime
@@ -106,22 +108,23 @@ class BalanceGameActivity : AppCompatActivity() {
                 else -> { }
             }
 
+
             //선택한 항목이 맞는지 확인하는 다이어로그
             val alertDialogBuilder = AlertDialog.Builder(this)
             alertDialogBuilder.apply {
                 setTitle("선택 확인")
                 setMessage("${selectedButton}에 투표하시겠어요?")
                 setPositiveButton("네") { dialog, _ ->
-                    //투표에 참여한 경우 프레임 전환
+                    //투표에 참여한 경우 투표 결과 프레임으로 전환
                     binding.frameVote.visibility = View.GONE
                     binding.frameVoteResult.visibility = View.VISIBLE
 
                     val database = FirebaseDatabase.getInstance()
-                    val reference = database.getReference("BalanceGame").child("-Nij7HNlic9JP8MxF0zs")
+                    val reference = database.getReference("BalanceGame").child(gameRoom)
 
                     reference.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val voteList = dataSnapshot.child("voteArray").getValue(object : GenericTypeIndicator<List<Int>>() {})
+                            val voteList = dataSnapshot.child("voteCountList").getValue(object : GenericTypeIndicator<List<Int>>() {})
                             //전체 투표 수
                             val voteCount = voteList?.sum()?.plus(1)
                             binding.voteCount.text = "전체 투표 수 : $voteCount"
@@ -131,7 +134,7 @@ class BalanceGameActivity : AppCompatActivity() {
                                     voteList?.let {
                                         val updatedList = it.toMutableList()
                                         updatedList[0] = updatedList[0] + 1
-                                        reference.child("voteArray").setValue(updatedList)
+                                        reference.child("voteCountList").setValue(updatedList)
 
                                         //리스트 값을 투표수, 프로그레스 바에 출력
                                         //현재 voteList는 갱신되지 않은 값을 가지고있기 때문에 +1을 해서 출력
@@ -147,7 +150,7 @@ class BalanceGameActivity : AppCompatActivity() {
                                     voteList?.let {
                                         val updatedList = it.toMutableList()
                                         updatedList[1] = updatedList[1] + 1
-                                        reference.child("voteArray").setValue(updatedList)
+                                        reference.child("voteCountList").setValue(updatedList)
 
                                         binding.voteCount1.text = "✔ ${voteList?.get(0) ?: 0}"
                                         binding.voteProgress1.progress = voteList?.get(0) ?: 0
@@ -159,7 +162,6 @@ class BalanceGameActivity : AppCompatActivity() {
                                 }
                             }
                         }
-
                         override fun onCancelled(databaseError: DatabaseError) {
                             // 에러 발생 시 동작
                             Log.e("밸겜", "The read failed: " + databaseError.code)
@@ -186,8 +188,8 @@ class BalanceGameActivity : AppCompatActivity() {
 
         //댓글을 출력할 리스트, 어댑터
         commentList = ArrayList()
-        keyList=ArrayList()
-        adapter = MyAdapter(this, commentList, currentUser, keyList, gameRoom)
+        commentKeyList=ArrayList()
+        adapter = MyAdapter(this, commentList, currentUser, commentKeyList, gameRoom)
         binding.commentRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.commentRecyclerView.adapter = adapter
 
@@ -218,16 +220,20 @@ class BalanceGameActivity : AppCompatActivity() {
         }
 
 
-        //리사이블러뷰에 댓글 내용을 추가하기
+        /*
+         * 리사이블러뷰에 댓글 추가하기
+         * commentKeyList()
+         * 댓글 삭제시 현재 선택된 리사이클러뷰의 키가 필요하기 때문에 댓글을 추가할 때 키 값을 저장해둠
+         */
         mDbRef.child("Comments").child(gameRoom).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     commentList.clear()
-                    keyList.clear()
+                    commentKeyList.clear()
                     for(postSnapshot in snapshot.children) {
                         val data = postSnapshot.getValue(Comments::class.java)
                         val uidKey: String = postSnapshot.key.toString()
                         commentList.add(data!!)
-                        keyList.add(uidKey)
+                        commentKeyList.add(uidKey)
                     }
                     adapter.notifyDataSetChanged()
                 }
@@ -245,7 +251,7 @@ class BalanceGameActivity : AppCompatActivity() {
         private val context: Context,
         private val commentList: ArrayList<Comments>,
         private val currentUser: String?,
-        private val keyList: ArrayList<String>,
+        private val commentKeyList: ArrayList<String>,
         private val gameRoom: String
     ):RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
         class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
@@ -280,7 +286,7 @@ class BalanceGameActivity : AppCompatActivity() {
                     builder.setTitle("삭제 확인")
                     builder.setMessage("댓글을 삭제하시겠습니까?")
                     builder.setPositiveButton("예") { dialog, which ->
-                        val selectedKey = keyList[position]
+                        val selectedKey = commentKeyList[position]
                         val ref = FirebaseDatabase.getInstance().getReference("Comments").child(gameRoom)
                         ref.child(selectedKey).removeValue().addOnSuccessListener {
                             Log.d("삭제 성공", "데이터 삭제 완료")

@@ -29,7 +29,8 @@ class FragmentBalance : Fragment() {
     lateinit var binding: FragmentBalanceBinding
     lateinit var mDbRef: DatabaseReference
     lateinit var adapter: MyAdapter
-    lateinit var balanceGameList: ArrayList<BalanceGameDataModel>
+    lateinit var balanceGameList: ArrayList<BalanceGameDataModel>   //밸런스게임 목록을 표시할 리스트
+    lateinit var gameRoomList: ArrayList<String>    //각 게임룸의 키 값을 저장할 리스트
 
 
     override fun onCreateView(
@@ -39,8 +40,9 @@ class FragmentBalance : Fragment() {
         binding = FragmentBalanceBinding.inflate(inflater)
         mDbRef = FirebaseDatabase.getInstance().reference
         balanceGameList = ArrayList()
+        gameRoomList = ArrayList()
 
-        adapter = MyAdapter(context,balanceGameList)
+        adapter = MyAdapter(context,balanceGameList, gameRoomList)
         binding.balanceRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.balanceRecyclerView.adapter = adapter
 
@@ -48,9 +50,12 @@ class FragmentBalance : Fragment() {
         mDbRef.child("BalanceGame").addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 balanceGameList.clear()
+                gameRoomList.clear()
                 for(postSnapshot in snapshot.children) {
                     val data = postSnapshot.getValue(BalanceGameDataModel::class.java)
+                    val key: String = postSnapshot.key.toString()
                     balanceGameList.add(data!!)
+                    gameRoomList.add(key)
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -69,7 +74,8 @@ class FragmentBalance : Fragment() {
 
     class MyAdapter(
         private val context: Context?,
-        private val balanceGameList: ArrayList<BalanceGameDataModel>
+        private val balanceGameList: ArrayList<BalanceGameDataModel>,
+        private val gameRoomList: ArrayList<String>
     ):RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
         inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             val userImage: CircleImageView = itemView.findViewById(R.id.balanceImage)
@@ -96,9 +102,10 @@ class FragmentBalance : Fragment() {
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             val currentGame = balanceGameList[position]
+            val currentRoomId = gameRoomList[position]
             val currentUser = currentGame.postUserId
             val title = "${currentGame.bal1} \n" + "  VS ${currentGame.bal2}"
-            val voteCount = currentGame.voteArray?.sum().toString()
+            val voteCount = currentGame.voteCountList?.sum().toString()
             holder.postName.text = currentGame.postUserName
             holder.time.text = currentGame.time
             holder.balanceTitle.text = title
@@ -121,6 +128,7 @@ class FragmentBalance : Fragment() {
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, BalanceGameActivity::class.java)
                 //bal1, bal2, userid, username, usergender, time
+                intent.putExtra("gameRoomId", currentRoomId)
                 intent.putExtra("balTitle", title)
                 intent.putExtra("bal1", currentGame.bal1)
                 intent.putExtra("bal2", currentGame.bal2)

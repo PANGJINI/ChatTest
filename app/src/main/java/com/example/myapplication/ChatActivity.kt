@@ -106,23 +106,25 @@ class ChatActivity : AppCompatActivity() {
         binding.sendBtn.setOnClickListener{
             val message = binding.messageEdit.text.toString()
             val messageObject = Message(message, senderUid, receiverUid, senderName, receiverName, currentTime)
-            //val messageObject = Message(message, senderUid, currentTime)
 
-            //디비에 메시지 데이터 저장
-            mDbRef.child("chats").child(senderRoom).child("messages").push()
-                .setValue(messageObject).addOnSuccessListener {
-                    mDbRef.child("chats").child(receiverRoom).child("messages").push()
-                        .setValue(messageObject)
+            if(message != "") {
+                //디비에 메시지 데이터 저장
+                mDbRef.child("chats").child(senderRoom).child("messages").push()
+                    .setValue(messageObject).addOnSuccessListener {
+                        mDbRef.child("chats").child(receiverRoom).child("messages").push()
+                            .setValue(messageObject)
+                    }
+                binding.messageEdit.setText("")
+
+                //메세지를 보냈을 때 간편채팅 화면이라면, 일반채팅 화면으로 전환해줌
+                val btnText: String = binding.fabSimpleChat.getText().toString()
+                if(btnText == "일반채팅") { binding.frameChat.visibility = VISIBLE
+                    binding.frameSimpleChat.visibility = GONE
+                    binding.fabAdd.visibility = GONE
+                    binding.fabSimpleChat.setText("간편채팅")
                 }
-            binding.messageEdit.setText("")
-
-            //메세지를 보냈을 때 간편채팅 화면이라면, 일반채팅 화면으로 전환해줌
-            val btnText: String = binding.fabSimpleChat.getText().toString()
-            if(btnText == "일반채팅") { binding.frameChat.visibility = VISIBLE
-                binding.frameSimpleChat.visibility = GONE
-                binding.fabAdd.visibility = GONE
-                binding.fabSimpleChat.setText("간편채팅")
             }
+
 
         }
 

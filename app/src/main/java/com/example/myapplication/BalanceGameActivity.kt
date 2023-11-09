@@ -101,82 +101,96 @@ class BalanceGameActivity : AppCompatActivity() {
 
         //버튼 클릭리스너
         val listener = View.OnClickListener { view ->
+            val database = FirebaseDatabase.getInstance()
+            val reference = database.getReference("BalanceGame").child(gameRoom)
 
-            val selectedButton = when(view.id){
-                R.id.voteBtn1 -> { binding.voteBtn1.text }
-                R.id.voteBtn2 -> { binding.voteBtn2.text }
-                else -> { }
-            }
+            //이미 투표한 사람인지 확인하기
+            reference.child("voteUserList").addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val voteUserList: MutableList<String> = snapshot.getValue(object : GenericTypeIndicator<MutableList<String>>() {}) ?: mutableListOf()
+                    if (voteUserList.contains(currentUser!!)) {
+                        Toast.makeText(applicationContext, "이미 투표하셨습니다.", Toast.LENGTH_SHORT).show()
+                        return
+                    } else {    //투표한 사람이 아닐 때만 DB에 추가하고 다이어로그 실행
+                        val selectedButton = when(view.id){
+                            R.id.voteBtn1 -> { binding.voteBtn1.text }
+                            R.id.voteBtn2 -> { binding.voteBtn2.text }
+                            else -> { }
+                        }
 
+                        //선택한 항목이 맞는지 확인하는 다이어로그
+                        val alertDialogBuilder = AlertDialog.Builder(this@BalanceGameActivity)
+                        alertDialogBuilder.apply {
+                            setTitle("선택 확인")
+                            setMessage("${selectedButton}에 투표하시겠어요?")
+                            setPositiveButton("네") { dialog, _ ->
+                                voteUserList.add(currentUser!!)
+                                reference.child("voteUserList").setValue(voteUserList)
 
-            //선택한 항목이 맞는지 확인하는 다이어로그
-            val alertDialogBuilder = AlertDialog.Builder(this)
-            alertDialogBuilder.apply {
-                setTitle("선택 확인")
-                setMessage("${selectedButton}에 투표하시겠어요?")
-                setPositiveButton("네") { dialog, _ ->
-                    //투표에 참여한 경우 투표 결과 프레임으로 전환
-                    binding.frameVote.visibility = View.GONE
-                    binding.frameVoteResult.visibility = View.VISIBLE
+                                //투표에 참여한 경우 투표 결과 프레임으로 전환
+                                binding.frameVote.visibility = View.GONE
+                                binding.frameVoteResult.visibility = View.VISIBLE
 
-                    val database = FirebaseDatabase.getInstance()
-                    val reference = database.getReference("BalanceGame").child(gameRoom)
+                                reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        val voteList = dataSnapshot.child("voteCountList").getValue(object : GenericTypeIndicator<List<Int>>() {})
+                                        //전체 투표 수
+                                        val voteCount = voteList?.sum()?.plus(1)
+                                        binding.voteCount.text = "전체 투표 수 : $voteCount"
+                                        when (view.id) {
+                                            //선택한 버튼이 Btn1이면 리스트의 [0]번째 인덱스 증가하고 DB 업데이트
+                                            R.id.voteBtn1 -> {
+                                                voteList?.let {
+                                                    val updatedList = it.toMutableList()
+                                                    updatedList[0] = updatedList[0] + 1
+                                                    reference.child("voteCountList").setValue(updatedList)
 
-                    reference.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val voteList = dataSnapshot.child("voteCountList").getValue(object : GenericTypeIndicator<List<Int>>() {})
-                            //전체 투표 수
-                            val voteCount = voteList?.sum()?.plus(1)
-                            binding.voteCount.text = "전체 투표 수 : $voteCount"
-                            when (view.id) {
-                                //선택한 버튼이 Btn1이면 리스트의 [0]번째 인덱스 증가하고 DB 업데이트
-                                R.id.voteBtn1 -> {
-                                    voteList?.let {
-                                        val updatedList = it.toMutableList()
-                                        updatedList[0] = updatedList[0] + 1
-                                        reference.child("voteCountList").setValue(updatedList)
+                                                    //리스트 값을 투표수, 프로그레스 바에 출력
+                                                    //현재 voteList는 갱신되지 않은 값을 가지고있기 때문에 +1을 해서 출력
+                                                    binding.voteCount1.text = "✔ ${voteList.get(0)+1}"
+                                                    binding.voteProgress1.progress = voteList.get(0)+1
+                                                    binding.voteProgress1.max = voteCount!!
+                                                    binding.voteCount2.text = "✔ ${voteList?.get(1) ?: 0}"
+                                                    binding.voteProgress2.progress = voteList?.get(1) ?: 0
+                                                    binding.voteProgress2.max = voteCount!!
+                                                }
+                                            }
+                                            R.id.voteBtn2 -> {
+                                                voteList?.let {
+                                                    val updatedList = it.toMutableList()
+                                                    updatedList[1] = updatedList[1] + 1
+                                                    reference.child("voteCountList").setValue(updatedList)
 
-                                        //리스트 값을 투표수, 프로그레스 바에 출력
-                                        //현재 voteList는 갱신되지 않은 값을 가지고있기 때문에 +1을 해서 출력
-                                        binding.voteCount1.text = "✔ ${voteList.get(0)+1}"
-                                        binding.voteProgress1.progress = voteList.get(0)+1
-                                        binding.voteProgress1.max = voteCount!!
-                                        binding.voteCount2.text = "✔ ${voteList?.get(1) ?: 0}"
-                                        binding.voteProgress2.progress = voteList?.get(1) ?: 0
-                                        binding.voteProgress2.max = voteCount!!
+                                                    binding.voteCount1.text = "✔ ${voteList?.get(0) ?: 0}"
+                                                    binding.voteProgress1.progress = voteList?.get(0) ?: 0
+                                                    binding.voteProgress1.max = voteCount!!
+                                                    binding.voteCount2.text = "✔ ${voteList.get(1)+1}"
+                                                    binding.voteProgress2.progress = voteList.get(1)+1
+                                                    binding.voteProgress2.max = voteCount!!
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                                R.id.voteBtn2 -> {
-                                    voteList?.let {
-                                        val updatedList = it.toMutableList()
-                                        updatedList[1] = updatedList[1] + 1
-                                        reference.child("voteCountList").setValue(updatedList)
-
-                                        binding.voteCount1.text = "✔ ${voteList?.get(0) ?: 0}"
-                                        binding.voteProgress1.progress = voteList?.get(0) ?: 0
-                                        binding.voteProgress1.max = voteCount!!
-                                        binding.voteCount2.text = "✔ ${voteList.get(1)+1}"
-                                        binding.voteProgress2.progress = voteList.get(1)+1
-                                        binding.voteProgress2.max = voteCount!!
+                                    override fun onCancelled(databaseError: DatabaseError) {
+                                        // 에러 발생 시 동작
+                                        Log.e("밸겜", "The read failed: " + databaseError.code)
                                     }
-                                }
+                                })//addListenerForSingleValueEvent 끝
+
+                                dialog.dismiss()
                             }
+                            setNegativeButton("아니오") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            setCancelable(false)
                         }
-                        override fun onCancelled(databaseError: DatabaseError) {
-                            // 에러 발생 시 동작
-                            Log.e("밸겜", "The read failed: " + databaseError.code)
-                        }
-                    })//addListenerForSingleValueEvent 끝
+                        val alertDialog = alertDialogBuilder.create()
+                        alertDialog.show()
+                    }
+                }
 
-                    dialog.dismiss()
-                }
-                setNegativeButton("아니오") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                setCancelable(false)
-            }
-            val alertDialog = alertDialogBuilder.create()
-            alertDialog.show()
+                override fun onCancelled(error: DatabaseError) {    }
+            })
         }
 
         for (btn in buttonList) {

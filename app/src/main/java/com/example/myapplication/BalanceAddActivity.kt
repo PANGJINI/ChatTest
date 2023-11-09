@@ -64,7 +64,8 @@ class BalanceAddActivity : AppCompatActivity() {
         binding.btnAdd.setOnClickListener{
             val bal1 = binding.editBalance1.text.toString()
             val bal2 = binding.editBalance2.text.toString()
-            val balanceObject = BalanceGameDataModel(bal1, bal2, listOf(0, 0),currentUser, postUserName, postUserGender, currentTime)
+            val balanceObject = BalanceGameDataModel(bal1, bal2, listOf(0, 0),currentUser,
+                postUserName, postUserGender, currentTime, listOf(""))
 
             //db에 밸런스게임 추가하기
             mDbRef.child("BalanceGame").push()

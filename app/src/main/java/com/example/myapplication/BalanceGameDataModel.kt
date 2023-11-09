@@ -7,7 +7,8 @@ class BalanceGameDataModel(
     var postUserId: String?,    //게시자 uid
     var postUserName: String?,  //게시자 이름
     var postUserGender: String?,
-    var time: String?)
+    var time: String?,
+    var voteUserList: List<String>? )
 {
-    constructor(): this("", "", listOf(0,0),"", "","","")
+    constructor(): this("", "", listOf(0,0),"", "","","", listOf(""))
 }

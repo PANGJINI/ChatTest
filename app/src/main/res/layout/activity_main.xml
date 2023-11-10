@@ -13,17 +13,20 @@
             android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:background="@color/white"
+            android:layout_marginTop="5dp"
             android:padding="5dp">
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="8dp"
                     android:src="@drawable/logo_77"/>
                 <ImageButton
                     android:id="@+id/btnLogout"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:background="@drawable/logout_5"
                     android:scaleType="matrix"
+                    android:layout_marginRight="8dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
         </RelativeLayout>

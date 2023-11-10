@@ -4,8 +4,4 @@
                 <item name="android:statusBarColor">@color/black</item>
     </style>
 
-    <style name="dialogTheme_1" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorAccent">@color/pink</item>
-    </style>
-
 </resources>

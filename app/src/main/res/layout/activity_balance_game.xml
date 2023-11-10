@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".BalanceGameActivity">
 
     <!-- 밸런스 게임 관련 부분 -->
@@ -13,6 +12,7 @@
         android:id="@+id/voteLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
         <!-- 게시자 사진, 이름, 게시물 작성시간 -->
         <RelativeLayout
@@ -182,7 +182,7 @@
     <LinearLayout
         android:id="@+id/editLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <EditText

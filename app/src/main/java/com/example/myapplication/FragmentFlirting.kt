@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,13 +54,11 @@ class FragmentFlirting : Fragment() {
         mDbRef.child("simpleChat").child("flirt")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    flirtList.clear()
                     for (postSnapshot in snapshot.children) {
                         val data = postSnapshot.getValue(SimpleChatDataModel::class.java)
                         if (data != null) {
-                            //데이터가 새로 추가될 때 이미 리스트에 있는 값이면 추가하지 않음
-                            if(!flirtList.contains(data)) {
-                                flirtList.add(data!!)
-                            }
+                            flirtList.add(data!!)
                         }
                     }
                     adapter.notifyDataSetChanged()

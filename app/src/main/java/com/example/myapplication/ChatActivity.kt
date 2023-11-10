@@ -63,7 +63,7 @@ class ChatActivity : AppCompatActivity() {
 
         //탭과 뷰페이저 연결하기
         //var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "텍대", "이모지", "밸런스게임", "논쟁")
-        var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "이모지", "텍대")
+        var tabTextList = listOf("My", "주접&플러팅", "밈", "특수문자", "이모지", "텍대")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
         }.attach()
@@ -137,7 +137,6 @@ class ChatActivity : AppCompatActivity() {
                         val message = postSnapshot.getValue(Message::class.java)
                         messageList.add(message!!)
                     }
-                    Log.e("채팅", "채팅액티비티 messageList ===== ${messageList}")
                     messageAdapter.notifyDataSetChanged()
                 }
 
@@ -175,46 +174,10 @@ class ChatActivity : AppCompatActivity() {
     } //oncreate 끝
 
 
-    //DataAdd 액티비티에서 받아온 값을 파이어베이스 db에 저장하기
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode== ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val category: String? = data!!.getStringExtra("category")
-            data?.getStringExtra("chatData")?.let { newString ->
-                //선택한 카테고리에 따라서 알맞은 파이어베이스 레퍼런스에 데이터 넣어주기
-                when(category) {
-                    "주접&플러팅" -> {
-                        mDbRef.child("simpleChat").child("flirt")
-                            .push().setValue(SimpleChatDataModel(newString))
-                    }
-                    "밈" -> {
-                        mDbRef.child("simpleChat").child("meme")
-                            .push().setValue(SimpleChatDataModel(newString))
-                    }
-                    "특수문자" -> {
-                        mDbRef.child("simpleChat").child("specialChar")
-                            .push().setValue(SimpleChatDataModel(newString))
-                    }
-                    "텍대" -> {
-                        mDbRef.child("simpleChat").child("textReplace")
-                            .push().setValue(SimpleChatDataModel(newString))
-                    }
-                    "이모지" -> {
-                        mDbRef.child("simpleChat").child("emoji")
-                            .push().setValue(SimpleChatDataModel(newString))
-                    }
-                    else -> { }
-                }
-
-            }
-        }
-    }
-
-
     //간편채팅 프래그먼트들을 연결해주는 뷰페이저 어댑터
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentFlirting(), FragmentMeme(), FragmentSpecialChar(),FragmentEmoji(), FragmentTextReplace())
+        val fragments = listOf<Fragment>(FragmentMyData(), FragmentFlirting(), FragmentMeme(), FragmentSpecialChar(),FragmentEmoji(), FragmentTextReplace())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size

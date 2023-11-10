@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -49,16 +50,41 @@ class MainActivity : AppCompatActivity() {
         var tabIconList = listOf(
             R.drawable.profile_icon_gray,
             R.drawable.chat_icon_gray,
-            R.drawable.balance_icon_gray
+            R.drawable.balance_icon_gray,
+            R.drawable.icon_pw
         )
 
         //탭과 뷰페이저 연결하기
-        var tabTextList = listOf("사용자", "채팅방", "밸런스게임")
+        var tabTextList = listOf("사용자", "채팅방", "밸런스게임", "내 정보")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
             tab.setIcon(tabIconList[position])
         }.attach()
 
+        binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                if (position == 3) { // "내 정보" 탭을 선택한 경우
+                    binding.logoImage.visibility = View.GONE
+                    binding.profileText.visibility = View.VISIBLE
+                    val pinkColor = ContextCompat.getColor(this@MainActivity, R.color.pink)
+                    binding.layout.setBackgroundColor(pinkColor)
+                    val whiteLogout = ContextCompat.getDrawable(this@MainActivity, R.drawable.logout_white)
+                    binding.btnLogout.background = whiteLogout
+                } else {
+                    // 다른 탭을 선택한 경우
+                    binding.logoImage.visibility = View.VISIBLE
+                    binding.profileText.visibility = View.GONE
+                    val whiteColor = ContextCompat.getColor(this@MainActivity, R.color.white)
+                    binding.layout.setBackgroundColor(whiteColor)
+                    val pinkLogout = ContextCompat.getDrawable(this@MainActivity, R.drawable.logout_5)
+                    binding.btnLogout.background = pinkLogout
+                }
+            }
+        })
+
+        
         val switchToBalanceFragment = intent.getBooleanExtra("switch_to_balance_fragment", false)
         if (switchToBalanceFragment) {
             switchToBalanceFragment()
@@ -89,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList(), FragmentBalance())
+        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList(), FragmentBalance(), FragmentMyPage())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size

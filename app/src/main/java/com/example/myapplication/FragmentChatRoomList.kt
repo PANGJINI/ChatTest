@@ -39,6 +39,8 @@ class FragmentChatRoomList : Fragment() {
         binding = FragmentChatRoomListBinding.inflate(inflater)
         mAuth = Firebase.auth
         mDbRef = Firebase.database.reference
+
+
         chatRoomList = ArrayList()
         adapter = ChatRoomAdapter(context, chatRoomList)
 

@@ -66,7 +66,7 @@ class BalanceAddActivity : AppCompatActivity() {
             val bal1 = binding.editBalance1.text.toString()
             val bal2 = binding.editBalance2.text.toString()
             val balanceObject = BalanceGameDataModel(bal1, bal2, listOf(0, 0),currentUser,
-                postUserName, postUserGender, currentTime, listOf(""))
+                postUserName, postUserGender, currentTime, listOf(mapOf("uid" to "", "content" to "")))
 
             if(bal1 == ""){
                 Toast.makeText(this, "첫 번째 값이 비어있어요.", Toast.LENGTH_SHORT).show()

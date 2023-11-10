@@ -18,6 +18,15 @@
             android:textColor="@color/textColor"
             android:textSize="15sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/commentSelectedBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선택내용"
+            android:textColor="@color/textColor"
+            android:textSize="15sp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/commentName" />
         <ImageButton
             android:id="@+id/btnCommentRemove"
             android:layout_alignParentRight="true"

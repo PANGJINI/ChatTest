@@ -115,6 +115,13 @@
                 android:textSize="15dp"
                 android:layout_marginBottom="10dp"/>
             <TextView
+                android:id="@+id/voteMySelect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="내 선택"
+                android:layout_marginBottom="10dp"/>
+            <TextView
                 android:id="@+id/voteContent1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

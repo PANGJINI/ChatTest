@@ -22,7 +22,7 @@
                     android:id="@+id/btnLogout"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/icon_menu"
+                    android:background="@drawable/logout_5"
                     android:scaleType="matrix"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
@@ -40,8 +40,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            app:tabTextColor="@color/textColor"
             app:tabIndicatorColor="@color/pink"
-            app:tabRippleColor="@color/pink">
+            app:tabIndicatorHeight="6dp"
+            app:tabRippleColor="@color/pink"
+            app:tabIconTint="@color/textColor">
         </com.google.android.material.tabs.TabLayout>
 
 

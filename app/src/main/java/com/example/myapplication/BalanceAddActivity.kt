@@ -76,7 +76,7 @@ class BalanceAddActivity : AppCompatActivity() {
                 //db에 밸런스게임 추가하기
                 mDbRef.child("BalanceGame").push()
                     .setValue(balanceObject).addOnSuccessListener {
-                        Toast.makeText(this, "밸런스게임이 생성되었습니다.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "밸런스 게임이 생성되었습니다.", Toast.LENGTH_LONG).show()
                     }
 
                 //main 액티비티의 밸런스게임 탭으로 화면전환하기

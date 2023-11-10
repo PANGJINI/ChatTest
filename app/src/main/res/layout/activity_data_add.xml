@@ -32,6 +32,8 @@
         android:id="@+id/editAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:backgroundTint="@color/textColor"
         android:hint="내용"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -44,18 +46,17 @@ class MainActivity : AppCompatActivity() {
         //뷰페이저에 어댑터 연결하기
         binding.viewpager.adapter = ViewPagerAdapter(this)
 
-        var tabIcons = listOf(
-            R.drawable.icon_userlist,
-            R.drawable.icon_chat,
-            R.drawable.icon_balance
+        var tabIconList = listOf(
+            R.drawable.profile_icon_gray,
+            R.drawable.chat_icon_gray,
+            R.drawable.balance_icon_gray
         )
 
         //탭과 뷰페이저 연결하기
         var tabTextList = listOf("사용자", "채팅방", "밸런스게임")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
-            tab.setIcon(tabIcons[position])
-
+            tab.setIcon(tabIconList[position])
         }.attach()
 
         val switchToBalanceFragment = intent.getBooleanExtra("switch_to_balance_fragment", false)

@@ -110,7 +110,7 @@ class BalanceGameActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "이미 ${currentUserVoteContent}에 투표하셨습니다.", Toast.LENGTH_SHORT).show()
                     binding.frameVote.visibility = View.GONE
                     binding.frameVoteResult.visibility = View.VISIBLE
-                    binding.voteMySelect.text = "내 선택 [$currentUserVoteContent]"
+                    binding.voteMySelect.text = "[$currentUserVoteContent]을 선택!"
 
                     mDbRef.child("BalanceGame").child(gameRoom).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -175,7 +175,7 @@ class BalanceGameActivity : AppCompatActivity() {
                                 //투표에 참여한 경우 투표 결과 프레임으로 전환
                                 binding.frameVote.visibility = View.GONE
                                 binding.frameVoteResult.visibility = View.VISIBLE
-                                binding.voteMySelect.text = "내 선택 [$selectedButton]"
+                                binding.voteMySelect.text = "[$selectedButton]을 선택!"
 
                                 reference.addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onDataChange(dataSnapshot: DataSnapshot) {

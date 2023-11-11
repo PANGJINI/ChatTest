@@ -17,12 +17,12 @@
         android:layout_marginBottom="3dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/balanceImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/icon_user"
             app:civ_border_width="2dp"
             app:civ_border_color="@color/pink"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="8dp"/>
         <TextView
             android:id="@+id/balanceName"
             android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:text="이름"
             android:textColor="@color/textColor"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/balanceTime"
@@ -75,7 +75,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@color/textColor" />

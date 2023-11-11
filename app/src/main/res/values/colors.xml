@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="pink_">#EA8DB2</color>
+    <color name="pink_">#bc807f</color>
     <color name="pink">#FFF7CAC9</color>
     <color name="blue">#C0EAFD</color>
     <color name="sendMessage">#CDFAE0E0</color>

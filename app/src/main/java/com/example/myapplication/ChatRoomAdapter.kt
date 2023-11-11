@@ -18,6 +18,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
@@ -26,18 +27,19 @@ import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class ChatRoomAdapter(private val context: Context?, private val chatRoomList: ArrayList<Message>):
+class ChatRoomAdapter(private val context: Context?, private val chatRoomList2: ArrayList<Message>):
     RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>() {
 
     lateinit var binding: ItemChatroomlistBinding
     lateinit var _binding: FragmentChatRoomListBinding
     var mAuth = FirebaseAuth.getInstance()
+    var mDbRef = FirebaseDatabase.getInstance().reference
     val currentUser = mAuth.currentUser?.uid
     var storage = FirebaseStorage.getInstance()
 
     //데이터 개수 가져오기
     override fun getItemCount(): Int {
-        return chatRoomList.size
+        return chatRoomList2.size
     }
 
     //화면 설정
@@ -49,26 +51,51 @@ class ChatRoomAdapter(private val context: Context?, private val chatRoomList: A
 
     //데이터 설정
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentRoom = chatRoomList[position]
+        val currentRoom = chatRoomList2[position]
+
+        var gender: String
 
         if (currentUser == currentRoom.sendId) {
             holder.userName.text = currentRoom.receiveName
+            holder.lastMessage.text = currentRoom.message
             var imgRef = storage.reference.child("images/IMAGE_${currentRoom.receiveId}_.png")
             imgRef.downloadUrl.addOnCompleteListener{ task ->
                 if(task.isSuccessful) {
                     if (context != null) {
                         Glide.with(context).load(task.result).into(holder.circleView)
                     }
+                    mDbRef.child("user").child(currentRoom.receiveId.toString()).child("gender")
+                        .addListenerForSingleValueEvent(object :ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                gender = snapshot.getValue(String::class.java).toString()
+                                if(gender == "남성") {
+                                    holder.circleView.borderColor = holder.blueColor
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {    }
+                        })
+
                 }
             }
         } else {
             holder.userName.text = currentRoom.sendName
+            holder.lastMessage.text = currentRoom.message
             var imgRef = storage.reference.child("images/IMAGE_${currentRoom.sendId}_.png")
             imgRef.downloadUrl.addOnCompleteListener{ task ->
                 if(task.isSuccessful) {
                     if (context != null) {
                         Glide.with(context).load(task.result).into(holder.circleView)
                     }
+                    mDbRef.child("user").child(currentRoom.sendId.toString()).child("gender")
+                        .addListenerForSingleValueEvent(object :ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                gender = snapshot.getValue(String::class.java).toString()
+                                if(gender == "남성") {
+                                    holder.circleView.borderColor = holder.blueColor
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {    }
+                        })
                 }
             }
         }
@@ -95,8 +122,8 @@ class ChatRoomAdapter(private val context: Context?, private val chatRoomList: A
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val userName: TextView = itemView.findViewById(R.id.user_name)
         val circleView: CircleImageView = itemView.findViewById(R.id.circleView)
-        //val lastMessage: TextView = itemView.findViewById(R.id.user_last_message)
-        //val blueColor = ContextCompat.getColor(itemView.context, R.color.blue)
+        val lastMessage: TextView = itemView.findViewById(R.id.user_last_message)
+        val blueColor = ContextCompat.getColor(itemView.context, R.color.blue)
 
     }
 }

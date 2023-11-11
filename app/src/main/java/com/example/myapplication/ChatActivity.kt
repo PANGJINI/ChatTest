@@ -108,7 +108,7 @@ class ChatActivity : AppCompatActivity() {
                 })
         }
         val time = System.currentTimeMillis()
-        val currentTime = SimpleDateFormat("HH:mm").format(Date(time)).toString()
+        val currentTime = SimpleDateFormat("HH:mm:ss").format(Date(time)).toString()
 
         senderRoom = receiverUid + senderUid
         receiverRoom = senderUid + receiverUid

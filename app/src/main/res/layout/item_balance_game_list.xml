@@ -11,15 +11,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="3dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/balanceImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/icon_user"
             app:civ_border_width="2dp"
             app:civ_border_color="@color/pink"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="8dp"/>
         <TextView
             android:id="@+id/balanceName"
             android:layout_width="wrap_content"
@@ -28,7 +31,7 @@
             android:layout_centerVertical="true"
             android:text="이름"
             android:textColor="@color/textColor"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/balanceTime"
@@ -36,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="작성시간"
             android:textColor="@color/textColor"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
@@ -49,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="밸런스게임 타이틀"
+            android:layout_margin="10dp"
             android:textColor="@color/textColor"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -58,11 +62,12 @@
             android:id="@+id/balanceVoteCount"
             android:layout_width="35dp"
             android:layout_height="wrap_content"
-            android:text="투표수"
+            android:layout_marginRight="10dp"
+            android:text="수"
             android:textAlignment="center"
-            android:textSize="13dp"
+            android:textSize="15dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_alignBottom="@+id/balanceTitle"/>
     </RelativeLayout>
 
 
@@ -70,7 +75,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:background="@color/textColor" />
 
 </LinearLayout>

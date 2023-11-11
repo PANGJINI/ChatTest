@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentEmojiBinding
@@ -39,20 +41,18 @@ class FragmentEmoji : Fragment() {
         emojiList = ArrayList()
         adapter = MyAdapter(context, emojiList)
 
-        binding.emojiRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.emojiRecyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.emojiRecyclerView.adapter = adapter
 
         //DB에 있는 간편채팅 데이터 가져와서 리스트에 넣기
         mDbRef.child("simpleChat").child("emoji")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    emojiList.clear()
                     for (postSnapshot in snapshot.children) {
                         val data = postSnapshot.getValue(SimpleChatDataModel::class.java)
                         if (data != null) {
-                            //데이터가 새로 추가될 때 이미 리스트에 있는 값이면 추가하지 않음
-                            if(!emojiList.contains(data)) {
-                                emojiList.add(data!!)
-                            }
+                            emojiList.add(data!!)
                         }
                     }
                     adapter.notifyDataSetChanged()

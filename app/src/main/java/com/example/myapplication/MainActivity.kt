@@ -5,14 +5,17 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -44,20 +47,44 @@ class MainActivity : AppCompatActivity() {
         //뷰페이저에 어댑터 연결하기
         binding.viewpager.adapter = ViewPagerAdapter(this)
 
-        var tabIcons = listOf(
-            R.drawable.icon_userlist,
-            R.drawable.icon_chat,
-            R.drawable.icon_balance
+        var tabIconList = listOf(
+            R.drawable.profile_icon_gray,
+            R.drawable.chat_icon_gray,
+            R.drawable.balance_icon_gray,
+            R.drawable.icon_pw
         )
 
         //탭과 뷰페이저 연결하기
-        var tabTextList = listOf("사용자", "채팅방", "밸런스게임")
+        var tabTextList = listOf("사용자", "채팅방", "밸런스게임", "내 정보")
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
-            tab.setIcon(tabIcons[position])
-
+            tab.setIcon(tabIconList[position])
         }.attach()
 
+        binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                if (position == 3) { // "내 정보" 탭을 선택한 경우
+                    binding.logoImage.visibility = View.GONE
+                    binding.profileText.visibility = View.VISIBLE
+                    val pinkColor = ContextCompat.getColor(this@MainActivity, R.color.pink)
+                    binding.layout.setBackgroundColor(pinkColor)
+                    val whiteLogout = ContextCompat.getDrawable(this@MainActivity, R.drawable.logout_white)
+                    binding.btnLogout.background = whiteLogout
+                } else {
+                    // 다른 탭을 선택한 경우
+                    binding.logoImage.visibility = View.VISIBLE
+                    binding.profileText.visibility = View.GONE
+                    val whiteColor = ContextCompat.getColor(this@MainActivity, R.color.white)
+                    binding.layout.setBackgroundColor(whiteColor)
+                    val pinkLogout = ContextCompat.getDrawable(this@MainActivity, R.drawable.logout_5)
+                    binding.btnLogout.background = pinkLogout
+                }
+            }
+        })
+
+        
         val switchToBalanceFragment = intent.getBooleanExtra("switch_to_balance_fragment", false)
         if (switchToBalanceFragment) {
             switchToBalanceFragment()
@@ -88,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
     class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList(), FragmentBalance())
+        val fragments = listOf<Fragment>(FragmentUserList(), FragmentChatRoomList(), FragmentBalance(), FragmentMyPage())
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size

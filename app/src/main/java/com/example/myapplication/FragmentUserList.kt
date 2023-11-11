@@ -42,6 +42,7 @@ class FragmentUserList : Fragment() {
         binding = FragmentUserListBinding.inflate(inflater)
         mAuth = Firebase.auth   //인증 초기화
         mDbRef = Firebase.database.reference    //DB초기화
+
         userList = ArrayList()  //리스트 초기화
         userAdapter = UserAdapter(context, userList)
 

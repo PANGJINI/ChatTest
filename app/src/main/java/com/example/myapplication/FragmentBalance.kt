@@ -104,12 +104,12 @@ class FragmentBalance : Fragment() {
             val currentGame = balanceGameList[position]
             val currentRoomId = gameRoomList[position]
             val currentUser = currentGame.postUserId
-            val title = "${currentGame.bal1} \n" + "  VS ${currentGame.bal2}"
+            val title = "${currentGame.bal1} \n" + "  \uD83C\uDD9A ${currentGame.bal2}"
             val voteCount = currentGame.voteCountList?.sum().toString()
             holder.postName.text = currentGame.postUserName
             holder.time.text = currentGame.time
             holder.balanceTitle.text = title
-            holder.voteCount.text = "⭐ $voteCount"
+            holder.voteCount.text = "\uD83D\uDDF3️️ $voteCount"
 
             val storage = FirebaseStorage.getInstance()
             val imgRef = storage.reference.child("images/IMAGE_${currentUser}_.png")

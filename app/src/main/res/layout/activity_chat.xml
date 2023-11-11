@@ -32,7 +32,8 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:tabMode="scrollable"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
@@ -64,7 +65,7 @@
         android:layout_marginBottom="10dp"
         android:text="간편채팅"
         android:backgroundTint="@color/pink"
-        app:icon="@drawable/icon_chat" />
+        app:icon="@drawable/chat_icon_2" />
 
     <LinearLayout
         android:id="@+id/input_layout"
@@ -82,9 +83,13 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="9"
-            android:paddingStart="20dp"
+            android:paddingStart="8dp"
+            android:textColorHighlight="@color/pink"
+            android:textSelectHandle="@color/pink"
+            android:textCursorDrawable="@color/pink_"
+            android:textColor="@color/textColor"
             android:background="@android:color/transparent"
-            android:hint="메세지를 입력하세요"/>
+            android:hint="메세지를 입력하세요."/>
         <ImageButton
             android:id="@+id/send_btn"
             android:layout_width="0dp"

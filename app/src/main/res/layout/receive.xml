@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/receive_message_text"
@@ -10,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:background="@drawable/btn_receiver_background"
-        android:layout_margin="5dp"
         android:padding="10dp"
         android:text="받는 메세지"
         android:textSize="15sp"/>
@@ -18,7 +18,7 @@
         android:id="@+id/receive_message_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft = "5dp"
         android:text="시간"
-        android:layout_toRightOf="@id/receive_message_text"
-        android:layout_alignBottom="@id/receive_message_text"/>
+        android:layout_below="@id/receive_message_text"/>
 </RelativeLayout>

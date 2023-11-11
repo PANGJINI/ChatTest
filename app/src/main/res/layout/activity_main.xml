@@ -15,15 +15,29 @@
             android:background="@color/white"
             android:padding="5dp">
                 <ImageView
+                    android:id="@+id/logoImage"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="8dp"
                     android:src="@drawable/logo_77"/>
+                <TextView
+                    android:id="@+id/profileText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:paddingLeft="10dp"
+                    android:text="내 프로필 💗"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"/>
                 <ImageButton
                     android:id="@+id/btnLogout"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/icon_menu"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/logout_5"
                     android:scaleType="matrix"
+                    android:layout_marginRight="8dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
         </RelativeLayout>
@@ -40,8 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            app:tabTextColor="@color/textColor"
             app:tabIndicatorColor="@color/pink"
-            app:tabRippleColor="@color/pink">
+            app:tabIndicatorHeight="6dp"
+            app:tabRippleColor="@color/pink"
+            app:tabIconTint="@color/textColor">
         </com.google.android.material.tabs.TabLayout>
 
 

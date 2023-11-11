@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
-    
+    tools:context=".FragmentMyPage">
+
+
     <ImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/my_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/profile_icon_pink"
@@ -17,13 +17,13 @@
 
     <LinearLayout
         android:id="@+id/linear"
-        android:layout_below="@id/profile_image"
+        android:layout_below="@id/my_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp">
         <TextView
-            android:id="@+id/profile_name"
+            android:id="@+id/my_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="이름"
@@ -38,23 +38,23 @@
             android:padding="5dp"
             android:layout_marginBottom="5dp">
             <TextView
-                android:id="@+id/profile_area"
+                android:id="@+id/my_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="지역" />
             <TextView
-                android:id="@+id/profile_age"
+                android:id="@+id/my_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="나이" />
             <TextView
-                android:id="@+id/profile_gender"
+                android:id="@+id/my_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="성별" />
         </LinearLayout>
         <TextView
-            android:id="@+id/profile_intro"
+            android:id="@+id/my_intro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_receiver_background"
@@ -62,16 +62,5 @@
             android:paddingHorizontal="15dp"
             android:paddingVertical="5dp"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnStartChat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:backgroundTint="@color/pink"
-        android:text="채팅 시작하기"
-        android:textStyle="bold"/>
-
 
 </RelativeLayout>

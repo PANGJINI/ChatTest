@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/send_message_text"
@@ -9,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:background="@drawable/btn_sender_background"
-        android:layout_margin="5dp"
         android:padding="10dp"
         android:text="보내는 메세지"
         android:textSize="15sp"/>
@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="시간"
-        android:layout_toLeftOf="@id/send_message_text"
-        android:layout_alignBottom="@id/send_message_text"/>
+        android:layout_below="@id/send_message_text"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"/>
 </RelativeLayout>

@@ -27,6 +27,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ActivityBalanceGameBinding
 import com.google.firebase.database.GenericTypeIndicator
@@ -44,6 +45,7 @@ class BalanceGameActivity : AppCompatActivity() {
     lateinit var commentKeyList: ArrayList<String>
     lateinit var adapter: MyAdapter
     lateinit var gameRoom: String
+    lateinit var currentUserVoteContent: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,23 +97,65 @@ class BalanceGameActivity : AppCompatActivity() {
         binding.voteContent2.text = bal2
 
 
+        //이미 투표한 사람이라면 결과창을 보여주기
+        mDbRef.child("BalanceGame").child(gameRoom).child("voteUserList")
+            .addListenerForSingleValueEvent(object :ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val voteUserList: MutableList<Map<String, String>> =
+                    snapshot.getValue(object : GenericTypeIndicator<MutableList<Map<String, String>>>() {}) ?: mutableListOf()
+                //이미 투표한 사람이면 결과창 보여주기
+                if (voteUserList.any {it["uid"] == currentUser}) {
+                    val currentUserVote = voteUserList.find { it["uid"] == currentUser }
+                    currentUserVoteContent = currentUserVote?.get("content").toString() //현재 유저의 투표내용
+                    Toast.makeText(applicationContext, "이미 ${currentUserVoteContent}에 투표하셨습니다.", Toast.LENGTH_LONG).show()
+                    binding.frameVote.visibility = View.GONE
+                    binding.frameVoteResult.visibility = View.VISIBLE
+                    binding.voteMySelect.text = "[$currentUserVoteContent]을 선택!"
+
+                    mDbRef.child("BalanceGame").child(gameRoom).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val voteList = dataSnapshot.child("voteCountList").getValue(object : GenericTypeIndicator<List<Int>>() {})
+                            //전체 투표 수
+                            val voteCount = voteList?.sum() ?: 0
+                            binding.voteCount.text = "\uD83D\uDC64 : $voteCount"
+
+                            voteList?.let {
+                                //리스트 값을 투표수, 프로그레스 바에 출력
+                                binding.voteCount1.text = "\uD83D\uDDF3 ${voteList.get(0) ?: 0}"
+                                binding.voteProgress1.progress = voteList.get(0) ?: 0
+                                binding.voteProgress1.max = voteCount!!
+                                binding.voteCount2.text = "\uD83D\uDDF3 ${voteList?.get(1) ?: 0}"
+                                binding.voteProgress2.progress = voteList?.get(1) ?: 0
+                                binding.voteProgress2.max = voteCount!!
+                            }
+
+                        }
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            // 에러 발생 시 동작
+                            Log.e("밸겜", "The read failed: " + databaseError.code)
+                        }
+                    })//addListenerForSingleValueEvent 끝
+
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {    }
+        })
+
+
         val buttonList = ArrayList<Button>()
         buttonList.add(binding.voteBtn1)
         buttonList.add(binding.voteBtn2)
 
-        //버튼 클릭리스너
+        //밸런스게임 선택 버튼 클릭리스너
         val listener = View.OnClickListener { view ->
             val database = FirebaseDatabase.getInstance()
             val reference = database.getReference("BalanceGame").child(gameRoom)
 
-            //이미 투표한 사람인지 확인하기
             reference.child("voteUserList").addListenerForSingleValueEvent(object :ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val voteUserList: MutableList<String> = snapshot.getValue(object : GenericTypeIndicator<MutableList<String>>() {}) ?: mutableListOf()
-                    if (voteUserList.contains(currentUser!!)) {
-                        Toast.makeText(applicationContext, "이미 투표하셨습니다.", Toast.LENGTH_SHORT).show()
-                        return
-                    } else {    //투표한 사람이 아닐 때만 DB에 추가하고 다이어로그 실행
+                    val voteUserList: MutableList<Map<String, String>> =
+                     snapshot.getValue(object : GenericTypeIndicator<MutableList<Map<String, String>>>() {}) ?: mutableListOf()
+
                         val selectedButton = when(view.id){
                             R.id.voteBtn1 -> { binding.voteBtn1.text }
                             R.id.voteBtn2 -> { binding.voteBtn2.text }
@@ -120,23 +164,25 @@ class BalanceGameActivity : AppCompatActivity() {
 
                         //선택한 항목이 맞는지 확인하는 다이어로그
                         val alertDialogBuilder = AlertDialog.Builder(this@BalanceGameActivity)
-                        alertDialogBuilder.apply {
-                            setTitle("선택 확인")
-                            setMessage("${selectedButton}에 투표하시겠어요?")
+                         .apply {
+                            setTitle("❗선택 확인❗")
+                            setMessage("'${selectedButton}'에 투표하시겠어요?")
                             setPositiveButton("네") { dialog, _ ->
-                                voteUserList.add(currentUser!!)
+                                val newVote = mapOf("uid" to currentUser, "content" to selectedButton)
+                                voteUserList.add(newVote as Map<String, String>)
                                 reference.child("voteUserList").setValue(voteUserList)
 
                                 //투표에 참여한 경우 투표 결과 프레임으로 전환
                                 binding.frameVote.visibility = View.GONE
                                 binding.frameVoteResult.visibility = View.VISIBLE
+                                binding.voteMySelect.text = "[$selectedButton]을 선택!"
 
                                 reference.addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                                         val voteList = dataSnapshot.child("voteCountList").getValue(object : GenericTypeIndicator<List<Int>>() {})
                                         //전체 투표 수
                                         val voteCount = voteList?.sum()?.plus(1)
-                                        binding.voteCount.text = "전체 투표 수 : $voteCount"
+                                        binding.voteCount.text = "\uD83D\uDC64 : $voteCount"
                                         when (view.id) {
                                             //선택한 버튼이 Btn1이면 리스트의 [0]번째 인덱스 증가하고 DB 업데이트
                                             R.id.voteBtn1 -> {
@@ -147,10 +193,10 @@ class BalanceGameActivity : AppCompatActivity() {
 
                                                     //리스트 값을 투표수, 프로그레스 바에 출력
                                                     //현재 voteList는 갱신되지 않은 값을 가지고있기 때문에 +1을 해서 출력
-                                                    binding.voteCount1.text = "✔ ${voteList.get(0)+1}"
+                                                    binding.voteCount1.text = "\uD83D\uDDF3 ${voteList.get(0)+1}"
                                                     binding.voteProgress1.progress = voteList.get(0)+1
                                                     binding.voteProgress1.max = voteCount!!
-                                                    binding.voteCount2.text = "✔ ${voteList?.get(1) ?: 0}"
+                                                    binding.voteCount2.text = "\uD83D\uDDF3 ${voteList?.get(1) ?: 0}"
                                                     binding.voteProgress2.progress = voteList?.get(1) ?: 0
                                                     binding.voteProgress2.max = voteCount!!
                                                 }
@@ -161,10 +207,10 @@ class BalanceGameActivity : AppCompatActivity() {
                                                     updatedList[1] = updatedList[1] + 1
                                                     reference.child("voteCountList").setValue(updatedList)
 
-                                                    binding.voteCount1.text = "✔ ${voteList?.get(0) ?: 0}"
+                                                    binding.voteCount1.text = "\uD83D\uDDF3️ ${voteList?.get(0) ?: 0}"
                                                     binding.voteProgress1.progress = voteList?.get(0) ?: 0
                                                     binding.voteProgress1.max = voteCount!!
-                                                    binding.voteCount2.text = "✔ ${voteList.get(1)+1}"
+                                                    binding.voteCount2.text = "\uD83D\uDDF3️ ${voteList.get(1)+1}"
                                                     binding.voteProgress2.progress = voteList.get(1)+1
                                                     binding.voteProgress2.max = voteCount!!
                                                 }
@@ -186,7 +232,6 @@ class BalanceGameActivity : AppCompatActivity() {
                         }
                         val alertDialog = alertDialogBuilder.create()
                         alertDialog.show()
-                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {    }
@@ -226,11 +271,16 @@ class BalanceGameActivity : AppCompatActivity() {
             val content = binding.editComment.text.toString()
             val commentObject = Comments(content, currentUser, writerName, currentTime)
 
-            //디비에 메시지 데이터 저장
-            mDbRef.child("Comments").child(gameRoom).push()
-                .setValue(commentObject).addOnSuccessListener {
-                }
-            binding.editComment.setText("")
+            if(content == "") {
+
+            } else {
+                //디비에 메시지 데이터 저장
+                mDbRef.child("Comments").child(gameRoom).push()
+                    .setValue(commentObject).addOnSuccessListener {
+                    }
+                binding.editComment.setText("")
+            }
+
         }
 
 
@@ -258,67 +308,6 @@ class BalanceGameActivity : AppCompatActivity() {
 
 
     }//onCreate 끝
-
-
-    //댓글 리사이클러뷰와 연결되는 MyAdapter
-    class MyAdapter(
-        private val context: Context,
-        private val commentList: ArrayList<Comments>,
-        private val currentUser: String?,
-        private val commentKeyList: ArrayList<String>,
-        private val gameRoom: String
-    ):RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
-        class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-            val writerName: TextView = itemView.findViewById(R.id.commentName)
-            val content: TextView = itemView.findViewById(R.id.commentContent)
-            val time: TextView = itemView.findViewById(R.id.commentTime)
-            val removeButton: ImageButton = itemView.findViewById(R.id.btnCommentRemove)
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_comments, parent, false)
-            return MyViewHolder(itemView)
-        }
-
-        override fun getItemCount(): Int {
-            return commentList.size
-        }
-
-        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val currentComment = commentList[position]
-            holder.writerName.text = currentComment.writerName
-            holder.content.text = currentComment.content
-            holder.time.text = currentComment.writeTime
-
-            //댓글 작성자 uid가 현재 접속자 uid와 같을 때만 댓글을 지울 수 있다
-            if (currentComment.writerId == currentUser) {
-                holder.removeButton.visibility = View.VISIBLE
-                holder.removeButton.setOnClickListener {
-                    //댓글을 정말 삭제할건지 alertDialog를 띄워준다
-                    val builder = AlertDialog.Builder(context)
-                    builder.setTitle("삭제 확인")
-                    builder.setMessage("댓글을 삭제하시겠습니까?")
-                    builder.setPositiveButton("예") { dialog, which ->
-                        val selectedKey = commentKeyList[position]
-                        val ref = FirebaseDatabase.getInstance().getReference("Comments").child(gameRoom)
-                        ref.child(selectedKey).removeValue().addOnSuccessListener {
-                            Log.d("삭제 성공", "데이터 삭제 완료")
-                        }
-                    }
-                    builder.setNegativeButton("아니오") { dialog, which ->
-                        dialog.dismiss()
-                    }
-                    val dialog: AlertDialog = builder.create()
-                    dialog.show()
-                }
-            } else {
-                holder.removeButton.visibility = View.INVISIBLE
-                holder.removeButton.setOnClickListener(null)
-            }
-        }
-
-    }//어댑터 끝
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

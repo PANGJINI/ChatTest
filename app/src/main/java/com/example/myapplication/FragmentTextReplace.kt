@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentTextReplaceBinding
@@ -46,13 +47,11 @@ class FragmentTextReplace : Fragment() {
         mDbRef.child("simpleChat").child("textReplace")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    textReplaceList.clear()
                     for (postSnapshot in snapshot.children) {
                         val data = postSnapshot.getValue(SimpleChatDataModel::class.java)
                         if (data != null) {
-                            //데이터가 새로 추가될 때 이미 리스트에 있는 값이면 추가하지 않음
-                            if(!textReplaceList.contains(data)) {
-                                textReplaceList.add(data!!)
-                            }
+                            textReplaceList.add(data!!)
                         }
                     }
                     adapter.notifyDataSetChanged()

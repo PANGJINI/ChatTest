@@ -1,204 +1,245 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 회원가입 화면 xml -->
+<?xml version="1.0" encoding="utf-8"?><!-- 회원가입 화면 xml -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="20dp">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/userImageView"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/profile"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/profile_icon_pink" />
+
             <EditText
                 android:id="@+id/edit_email"
-                android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="이메일"/>
+                android:hint="이메일"
+                android:paddingStart="10dp"
+                android:backgroundTint="@color/textColor"
+                android:inputType="textEmailAddress" />
+
             <EditText
                 android:id="@+id/edit_password"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="비밀번호"/>
+                android:hint="비밀번호"
+                android:backgroundTint="@color/textColor"
+                android:paddingStart="10dp" />
+
             <EditText
                 android:id="@+id/edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="이름"/>
+                android:hint="이름"
+                android:backgroundTint="@color/textColor"
+                android:paddingStart="10dp"/>
+
             <EditText
                 android:id="@+id/edit_age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="나이"/>
+                android:paddingStart="10dp"
+                android:hint="나이"
+                android:backgroundTint="@color/textColor" />
+
             <EditText
                 android:id="@+id/edit_introduction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="상태메세지 작성"/>
+                android:paddingStart="10dp"
+                android:backgroundTint="@color/textColor"
+                android:hint="상태메세지 작성" />
 
             <RadioGroup
                 android:id="@+id/edit_gender"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp">
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:text="💗 성별"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:layout_marginRight="5dp"/>
+                    android:textStyle="bold" />
+
                 <RadioButton
                     android:id="@+id/edit_male"
-                    android:text="남성"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:buttonTint="@color/pink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:text="남성" />
+
                 <RadioButton
                     android:id="@+id/edit_female"
-                    android:text="여성"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:buttonTint="@color/pink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:text="여성" />
             </RadioGroup>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:text="💗 지역"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:layout_marginRight="5dp"/>
+                    android:textStyle="bold" />
+
                 <Spinner
                     android:id="@+id/spinner_area"
-                    android:layout_marginLeft="40dp"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="15dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginBottom="15dp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="💗 MBTI"
                 android:textSize="15sp"
-                android:layout_marginBottom="5dp"
                 android:textStyle="bold" />
+
             <TableLayout
                 android:id="@+id/edit_mbti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp">
+
                 <TableRow>
+
                     <CheckBox
                         android:id="@+id/mbti1"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ISTJ"/>
+                        android:text="ISTJ" />
+
                     <CheckBox
                         android:id="@+id/mbti2"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ISFJ"/>
+                        android:text="ISFJ" />
+
                     <CheckBox
                         android:id="@+id/mbti3"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="INFJ"/>
+                        android:text="INFJ" />
+
                     <CheckBox
                         android:id="@+id/mbti4"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="INTJ"/>
+                        android:text="INTJ" />
                 </TableRow>
+
                 <TableRow>
+
                     <CheckBox
                         android:id="@+id/mbti5"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ISTP"/>
+                        android:text="ISTP" />
+
                     <CheckBox
                         android:id="@+id/mbti6"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ISFP"/>
+                        android:text="ISFP" />
+
                     <CheckBox
                         android:id="@+id/mbti7"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="INFP"/>
+                        android:text="INFP" />
+
                     <CheckBox
                         android:id="@+id/mbti8"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="INTP"/>
+                        android:text="INTP" />
                 </TableRow>
+
                 <TableRow>
+
                     <CheckBox
                         android:id="@+id/mbti9"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ESTP"/>
+                        android:text="ESTP" />
+
                     <CheckBox
                         android:id="@+id/mbti10"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ESFP"/>
+                        android:text="ESFP" />
+
                     <CheckBox
                         android:id="@+id/mbti11"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ENFP"/>
+                        android:text="ENFP" />
+
                     <CheckBox
                         android:id="@+id/mbti12"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ENTP"/>
+                        android:text="ENTP" />
                 </TableRow>
+
                 <TableRow>
+
                     <CheckBox
                         android:id="@+id/mbti13"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ESTJ"/>
+                        android:text="ESTJ" />
+
                     <CheckBox
                         android:id="@+id/mbti14"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ESFJ"/>
+                        android:text="ESFJ" />
+
                     <CheckBox
                         android:id="@+id/mbti15"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ENFJ"/>
+                        android:text="ENFJ" />
+
                     <CheckBox
                         android:id="@+id/mbti16"
                         android:layout_weight="1"
                         android:buttonTint="@color/pink"
-                        android:text="ENTJ"/>
+                        android:text="ENTJ" />
                 </TableRow>
             </TableLayout>
 
@@ -207,10 +248,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="회원가입"
                 android:backgroundTint="@color/sendMessage"
+                android:text="회원가입"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
         </LinearLayout>
     </ScrollView>

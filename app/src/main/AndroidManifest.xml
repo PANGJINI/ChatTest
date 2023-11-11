@@ -19,7 +19,11 @@
             android:exported="false" />
         <activity
             android:name=".BalanceGameActivity"
-            android:exported="true"></activity>
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            >
+
+        </activity>
         <activity
             android:name=".ProfileActivity"
             android:exported="false"

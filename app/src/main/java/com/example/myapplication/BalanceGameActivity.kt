@@ -107,7 +107,7 @@ class BalanceGameActivity : AppCompatActivity() {
                 if (voteUserList.any {it["uid"] == currentUser}) {
                     val currentUserVote = voteUserList.find { it["uid"] == currentUser }
                     currentUserVoteContent = currentUserVote?.get("content").toString() //현재 유저의 투표내용
-                    Toast.makeText(applicationContext, "이미 ${currentUserVoteContent}에 투표하셨습니다.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "이미 ${currentUserVoteContent}에 투표하셨습니다.", Toast.LENGTH_SHORT).show()
                     binding.frameVote.visibility = View.GONE
                     binding.frameVoteResult.visibility = View.VISIBLE
                     binding.voteMySelect.text = "내 선택 [$currentUserVoteContent]"

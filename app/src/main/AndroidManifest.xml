@@ -44,7 +44,6 @@
         <activity
             android:name=".ChatActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity

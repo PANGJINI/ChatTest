@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 
@@ -84,11 +86,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        
         val switchToBalanceFragment = intent.getBooleanExtra("switch_to_balance_fragment", false)
         if (switchToBalanceFragment) {
             switchToBalanceFragment()
         }
+        var switchToChatListFragment = intent.getBooleanExtra("switch_to_chatlist_fragment", false)
+        if (switchToChatListFragment) {
+            switchToChatListFragment()
+        }
+
 
         //버튼 누르면 로그아웃하기
         binding.btnLogout.setOnClickListener {
@@ -127,6 +133,9 @@ class MainActivity : AppCompatActivity() {
 
     fun switchToBalanceFragment() {
         viewPager.currentItem = 2   //2번 인덱스 = 밸런스게임 프래그먼트
+    }
+    fun switchToChatListFragment() {
+        viewPager.currentItem = 1   //2번 인덱스 = 밸런스게임 프래그먼트
     }
 
 }

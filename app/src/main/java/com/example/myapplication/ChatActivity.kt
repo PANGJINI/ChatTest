@@ -8,8 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,17 +34,19 @@ class ChatActivity : AppCompatActivity() {
 
     //뷰바인딩
     lateinit var binding: ActivityChatBinding
+
     //채팅 내용 설정을 위한 변수들
     private lateinit var receiverName: String
     private lateinit var receiverUid: String
+
     //받는 사람의 채팅룸 값 = 보낸사람uid + 받는사람uid
     private lateinit var receiverRoom: String
+
     //보낸 사람의 채팅룸 값 = 받는사람uid + 보낸사람uid
     private lateinit var senderRoom: String
     private lateinit var messageList: ArrayList<Message>
     lateinit var mAuth: FirebaseAuth
     lateinit var mDbRef: DatabaseReference
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +82,13 @@ class ChatActivity : AppCompatActivity() {
         //유저리스트에서 넘어온 상대방의 name, uId 데이터를 receiver-- 변수에 담기
         receiverName = intent.getStringExtra("receiverName").toString()
         receiverUid = intent.getStringExtra("receiverId").toString()
+        var chatFlag = intent.getBooleanExtra("chatFlag", false)
+        if(chatFlag) {
+            binding.frameChat.visibility = GONE
+            binding.frameSimpleChat.visibility = VISIBLE
+            binding.fabSimpleChat.setText("일반채팅")
+            binding.fabAdd.visibility = VISIBLE
+        }
         //액션바에 상대방 이름을 보여주기
         supportActionBar?.title = receiverName
 
@@ -91,6 +102,7 @@ class ChatActivity : AppCompatActivity() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         senderName = snapshot.getValue(String::class.java).toString()
                     }
+
                     override fun onCancelled(error: DatabaseError) {
                     }
                 })
@@ -103,11 +115,12 @@ class ChatActivity : AppCompatActivity() {
 
 
         //메세지 전송 이벤트
-        binding.sendBtn.setOnClickListener{
+        binding.sendBtn.setOnClickListener {
             val message = binding.messageEdit.text.toString()
-            val messageObject = Message(message, senderUid, receiverUid, senderName, receiverName, currentTime)
+            val messageObject =
+                Message(message, senderUid, receiverUid, senderName, receiverName, currentTime)
 
-            if(message != "") {
+            if (message != "") {
                 //디비에 메시지 데이터 저장
                 mDbRef.child("chats").child(senderRoom).child("messages").push()
                     .setValue(messageObject).addOnSuccessListener {
@@ -118,7 +131,8 @@ class ChatActivity : AppCompatActivity() {
 
                 //메세지를 보냈을 때 간편채팅 화면이라면, 일반채팅 화면으로 전환해줌
                 val btnText: String = binding.fabSimpleChat.getText().toString()
-                if(btnText == "일반채팅") { binding.frameChat.visibility = VISIBLE
+                if (btnText == "일반채팅") {
+                    binding.frameChat.visibility = VISIBLE
                     binding.frameSimpleChat.visibility = GONE
                     binding.fabAdd.visibility = GONE
                     binding.fabSimpleChat.setText("간편채팅")
@@ -130,10 +144,10 @@ class ChatActivity : AppCompatActivity() {
 
         //채팅 리사이클러뷰에 메시지 내용을 추가
         mDbRef.child("chats").child(senderRoom).child("messages")
-            .addValueEventListener(object: ValueEventListener {
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     messageList.clear()
-                    for(postSnapshot in snapshot.children) {
+                    for (postSnapshot in snapshot.children) {
                         val message = postSnapshot.getValue(Message::class.java)
                         messageList.add(message!!)
                     }
@@ -150,6 +164,8 @@ class ChatActivity : AppCompatActivity() {
         //항목 추가 플로팅버튼 누르면 DataAddActivity로 이동
         binding.fabAdd.setOnClickListener {
             val intent = Intent(this, DataAddActivity::class.java)
+            intent.putExtra("receiverName", receiverName)
+            intent.putExtra("receiverId", receiverUid)
             startActivityForResult(intent, ADD_ACTIVITY_REQUEST_CODE)
         }
 
@@ -158,12 +174,15 @@ class ChatActivity : AppCompatActivity() {
             val btnText: String = binding.fabSimpleChat.getText().toString()
 
             when (btnText) {
-                "간편채팅" -> { binding.frameChat.visibility = GONE
+                "간편채팅" -> {
+                    binding.frameChat.visibility = GONE
                     binding.frameSimpleChat.visibility = VISIBLE
                     binding.fabSimpleChat.setText("일반채팅")
                     binding.fabAdd.visibility = VISIBLE
                 }
-                "일반채팅" -> { binding.frameChat.visibility = VISIBLE
+
+                "일반채팅" -> {
+                    binding.frameChat.visibility = VISIBLE
                     binding.frameSimpleChat.visibility = GONE
                     binding.fabSimpleChat.setText("간편채팅")
                     binding.fabAdd.visibility = GONE
@@ -175,9 +194,16 @@ class ChatActivity : AppCompatActivity() {
 
 
     //간편채팅 프래그먼트들을 연결해주는 뷰페이저 어댑터
-    class ViewPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
+    class ViewPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         private lateinit var viewPagerAdapter: ViewPagerAdapter
-        val fragments = listOf<Fragment>(FragmentMyData(), FragmentFlirting(), FragmentMeme(), FragmentSpecialChar(),FragmentEmoji(), FragmentTextReplace())
+        val fragments = listOf<Fragment>(
+            FragmentMyData(),
+            FragmentFlirting(),
+            FragmentMeme(),
+            FragmentSpecialChar(),
+            FragmentEmoji(),
+            FragmentTextReplace()
+        )
 
         //프래그먼트 페이지 수 반환
         override fun getItemCount(): Int = fragments.size
@@ -188,5 +214,26 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // 뒤로가기 버튼이 클릭되었을 때 main 액티비티의 두 번째 탭으로 이동
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                intent.putExtra("switch_to_chatlist_fragment", true)
+                startActivity(intent)
+                //finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+
+
 
 }
+
+
+

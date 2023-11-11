@@ -37,6 +37,7 @@ class DataAddActivity : AppCompatActivity() {
         val currentUser = mAuth.currentUser?.uid
 
         //액션바 설정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "간편채팅 항목 추가하기"
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFF7CAC9")))
 
@@ -92,22 +93,24 @@ class DataAddActivity : AppCompatActivity() {
 
     }
 
-//    //'저장' 메뉴가 선택됐을 때 다시 chat activity로 돌아감
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if(item.itemId == R.id.menu_add_save) {
-//            if(binding.editAdd.text.toString() == "") {
-//                Toast.makeText(this, "내용을 입력하세요.", Toast.LENGTH_SHORT).show()
-//            } else {
-//                val intent = intent
-//                intent.putExtra("category", category)
-//                intent.putExtra("chatData", binding.editAdd.text.toString())
-//                setResult(Activity.RESULT_OK, intent)
-//                finish()
-//                return true
-//            }
-//        }
-//        return true
-//    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            //뒤로가기 눌렀을 때 chat activity로 이동
+            android.R.id.home -> {
+                val receiverName = intent.getStringExtra("receiverName").toString()
+                val receiverId = intent.getStringExtra("receiverId").toString()
+
+                val intent = Intent(this, ChatActivity::class.java)
+                intent.putExtra("receiverName", receiverName)
+                intent.putExtra("receiverId", receiverId)
+                intent.putExtra("chatFlag", true)
+                startActivity(intent)
+                finish()
+                true
+            }
+            else -> true
+        }
+    }
 
 
 }

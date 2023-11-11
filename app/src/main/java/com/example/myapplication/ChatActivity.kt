@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
@@ -187,6 +188,36 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                val fragment = FragmentChatRoomList()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.chat_recyclerView, fragment)
+                    .commit()
+                return true}
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        val chatRoomListFragment = FragmentChatRoomList()
+        supportFragmentManager.beginTransaction().replace(R.id.chat_recyclerView, chatRoomListFragment).commit()
+    }
 
 
-}
+    //채팅방에서 진입 시 채팅방으로 나오는 코드
+//        val currentFragment = supportFragmentManager.findFragmentById(R.id.chat_recyclerView)
+//
+//        if (currentFragment is FragmentChatRoomList) {
+//            val chatRoomListFragment = FragmentChatRoomList()
+//            supportFragmentManager.beginTransaction().replace(R.id.chat_recyclerView, chatRoomListFragment).commit()
+//
+//
+//        } else {
+//            // 그 외의 경우에는 기본 뒤로 가기 동작을 수행
+//            super.onBackPressed()
+//        }
+    }
+
+

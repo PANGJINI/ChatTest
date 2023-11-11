@@ -174,38 +174,39 @@ class SignUpActivity : AppCompatActivity() {
             }
 
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {     // 회원가입 성공시
-                        val user = Firebase.auth.currentUser
-                        val userId = user?.uid
-                        val intent: Intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {     // 회원가입 성공시
+                            val user = Firebase.auth.currentUser
+                            val userId = user?.uid
+                            val intent: Intent =
+                                Intent(this@SignUpActivity, LoginActivity::class.java)
 
-                        //storage에 이미지 업로드
-                        Upload(userId!!)
-                        //firebase에 사용자 정보 업로드
-                        addUserDatabase(
-                            email,
-                            mAuth.currentUser?.uid!!,
-                            name,
-                            age,
-                            gender,
-                            area,
-                            mbti,
-                            intro
-                        )
-                        //로그인 화면으로 전환하고 회원가입 성공 메세지 띄우기
-                        startActivity(intent)
-                        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
+                            //storage에 이미지 업로드
+                            Upload(userId!!)
+                            //firebase에 사용자 정보 업로드
+                            addUserDatabase(
+                                email,
+                                mAuth.currentUser?.uid!!,
+                                name,
+                                age,
+                                gender,
+                                area,
+                                mbti,
+                                intro
+                            )
+                            //로그인 화면으로 전환하고 회원가입 성공 메세지 띄우기
+                            startActivity(intent)
+                            Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()
 
-                    } else {                    // 회원가입 실패시
-                        Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()
-                        Log.d("signUp", "ERROR ::::: ${task.exception}")
+                        } else {                    // 회원가입 실패시
+                            Toast.makeText(this, "회원가입 실패", Toast.LENGTH_LONG).show()
+                            Log.d("signUp", "ERROR ::::: ${task.exception}")
+                        }
                     }
+
+
                 }
-        }
-
-
     }
 
 //    companion object {

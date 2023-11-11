@@ -4,4 +4,21 @@
                 <item name="android:statusBarColor">@color/black</item>
     </style>
 
+    <style name="editTextTheme" parent="Theme.AppCompat.Light.NoActionBar">
+<!--        포커싱 됐을 때 언더바 색상-->
+        <item name="colorAccent">@color/pink_</item>
+<!--        포커싱 되지 않았을 때 언더바 색상-->
+        <item name="colorControlNormal">@color/textColor</item>
+<!--        핸들 색상-->
+        <item name="colorControlActivated">@color/pink</item>
+<!--        드래그 했을 때 배경 색상-->
+        <item name="android:textColorHighlight">@color/pink</item>
+<!--        깜빡이는 커서 색상-->
+        <item name="android:textCursorDrawable">@color/pink_</item>
+
+        <item name="android:textColor">@color/textColor</item>
+        <item name="hintTextColor">@color/receiveMessage</item>
+        <item name="android:paddingStart">10dp</item>
+    </style>
+
 </resources>

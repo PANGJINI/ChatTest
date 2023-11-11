@@ -29,8 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="이메일"
-                android:paddingStart="10dp"
-                android:backgroundTint="@color/textColor"
+                android:theme="@style/editTextTheme"
                 android:inputType="textEmailAddress" />
 
             <EditText
@@ -39,32 +38,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="비밀번호"
-                android:backgroundTint="@color/textColor"
-                android:paddingStart="10dp" />
+                android:theme="@style/editTextTheme" />
 
             <EditText
                 android:id="@+id/edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="이름"
-                android:backgroundTint="@color/textColor"
-                android:paddingStart="10dp"/>
+                android:theme="@style/editTextTheme"/>
 
             <EditText
                 android:id="@+id/edit_age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
                 android:hint="나이"
-                android:backgroundTint="@color/textColor" />
+                android:theme="@style/editTextTheme"/>
 
             <EditText
                 android:id="@+id/edit_introduction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:backgroundTint="@color/textColor"
-                android:hint="상태메세지 작성" />
+                android:hint="상태메세지 작성"
+                android:theme="@style/editTextTheme"/>
 
             <RadioGroup
                 android:id="@+id/edit_gender"
@@ -78,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:text="💗 성별"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <RadioButton
@@ -109,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:text="💗 지역"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -125,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="💗 MBTI"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TableLayout

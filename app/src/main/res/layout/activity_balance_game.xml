@@ -27,7 +27,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/icon_user"
+                android:src="@drawable/profile_icon_pink"
                 app:civ_border_color="@color/pink"
                 app:civ_border_width="2dp" />
             <TextView
@@ -239,12 +239,8 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="9"
-            android:paddingStart="8dp"
-            android:textColorHighlight="@color/pink"
-            android:textSelectHandle="@color/pink"
-            android:textCursorDrawable="@color/pink_"
+            android:theme="@style/editTextTheme"
             android:background="@android:color/transparent"
-            android:textColor="@color/textColor"
             android:hint="댓글을 입력하세요." />
         <ImageButton
             android:id="@+id/btnSend"

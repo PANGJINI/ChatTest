@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="15dp">
         <TextView
             android:id="@+id/my_name"
             android:layout_width="match_parent"
@@ -65,15 +65,13 @@
 
     <Button
         android:id="@+id/btn_modify"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/sendMessage"
-        android:text="정보 수정"
-        android:textColor="@color/textColor"
-        android:textSize="15sp"
-        android:textStyle="bold"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/pink"
+        android:textColor="@color/textColor"
+        android:text="회원 정보 수정하기"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

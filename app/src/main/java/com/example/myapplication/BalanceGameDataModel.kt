@@ -8,9 +8,7 @@ class BalanceGameDataModel(
     var postUserName: String?,  //게시자 이름
     var postUserGender: String?,
     var time: String?,
-    //var voteUserList: List<String>?
     var voteUserList: List<Map<String, String>>?)
 {
-    //constructor(): this("", "", listOf(0,0),"", "","","", listOf(""))
     constructor(): this("", "", listOf(0,0),"", "","","", listOf())
 }

@@ -27,7 +27,7 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currentUser = userList[position]        //currentUser에 데이터 담기
         holder.userName.text = currentUser.name     //리사이클러뷰에 사용자 이름 보여줌
-        holder.userMbti.text = currentUser.mbti     //mbti 보여줌
+        holder.userMbti.text = currentUser.mbti.toString()     //mbti 보여줌
         holder.userIntroduction.text = currentUser.introduction     //자기소개 보여줌
 
         //스토리지에서 이미지 받아오기
@@ -71,9 +71,15 @@ class UserAdapter(private val context: Context?, private val userList: ArrayList
         val userIntroduction: TextView = itemView.findViewById(R.id.user_introduction)
         val circleView: CircleImageView = itemView.findViewById(R.id.circleView)
         val blueColor = ContextCompat.getColor(itemView.context, R.color.blue)
+        val pinkColor = ContextCompat.getColor(itemView.context, R.color.pink)
+
 
         fun borderChange (user: User) {
-            if (user.gender == "남성") circleView.borderColor = blueColor
+            if (user.gender == "남성") {
+                circleView.borderColor = blueColor
+            } else {
+                circleView.borderColor= pinkColor
+            }
         }
 
     }

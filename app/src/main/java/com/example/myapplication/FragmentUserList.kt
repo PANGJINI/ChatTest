@@ -53,6 +53,7 @@ class FragmentUserList : Fragment() {
         mDbRef.child("user").addValueEventListener(object: ValueEventListener {
             //onDataChange  데이터 변경 시 실행
             override fun onDataChange(snapshot: DataSnapshot) {
+                userList.clear()
                 for(postSnapshot in snapshot.children) {    //children 내에 있는 데이터만큼 반복
                     //유저 정보
                     val currentUser = postSnapshot.getValue(User::class.java)

@@ -1,7 +1,5 @@
 package com.example.myapplication
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -13,12 +11,10 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -26,9 +22,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.jar.Manifest
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -126,7 +119,9 @@ class SignUpActivity : AppCompatActivity() {
                 gender = genderS.text.toString()
             }
 
-            val mbti: MutableList<String> = mutableListOf()
+            //val mbti: MutableList<String> = mutableListOf()
+            val mbti: ArrayList<String> = arrayListOf()
+
             if (binding.mbti1.isChecked) {
                 mbti.add(binding.mbti1.text.toString())
             }
@@ -229,7 +224,7 @@ class SignUpActivity : AppCompatActivity() {
             Toast.makeText(this, "프로필 이미지를 등록하세요.", Toast.LENGTH_LONG).show()
         } else {
             //이미지 업로드에 성공한 경우
-            storageRef?.putFile(imageUri!!)?.addOnSuccessListener {
+            storageRef?.putFile(imageUri!!)?.addOnSuccessListener { task ->
                 //DB에 회원정보 올리기
                 mDbRef.child("user").child(userId).setValue(userObject)
                 Toast.makeText(this, "회원가입 성공", Toast.LENGTH_LONG).show()

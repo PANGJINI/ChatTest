@@ -8,8 +8,9 @@ data class User(
     var gender: String?,
     var area: String?,
     var mbti: String?,
+    //var mbti: ArrayList<String>,
     var introduction: String?
 
 ){
-    constructor(): this( "", "", "","","","","", "")
+    constructor(): this( "", "", "","","","", "","")
 }

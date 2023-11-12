@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -48,22 +49,22 @@ class FragmentMyPage : Fragment() {
             }
         })
 
-        //프로필 이미지 받아오기
-        var storage = FirebaseStorage.getInstance()
-        val imgRef = storage.reference.child("images/IMAGE_${currentUser}_.png")
-        imgRef.downloadUrl.addOnCompleteListener{ task ->
-            if(task.isSuccessful) {
-                //글라이드에서 이미지 가져와서 circleView에 설정하기
-                if (this != null) {
-                    Glide.with(this).load(task.result).into(binding.myImage)
-                }
-            }
-        }
 
-        //나머지 프로필 내용 받아오기
-        mDbRef.child("user").child(currentUser!!).addListenerForSingleValueEvent(object :
+        //USER DB에서 프로필 내용 받아오기
+        mDbRef.child("user").child(currentUser!!).addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                //프로필 이미지 받아오기
+                var storage = FirebaseStorage.getInstance()
+                val imgRef = storage.reference.child("images/IMAGE_${currentUser}_.png")
+                imgRef.downloadUrl.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        if (this != null) {
+                            Glide.with(this@FragmentMyPage).load(task.result).into(binding.myImage)
+                        }
+                    }
+                }
+
                 val username = dataSnapshot.child("name").getValue(String::class.java)
                 binding.myName.text = username
                 val area = dataSnapshot.child("area").getValue(String::class.java)
@@ -77,6 +78,11 @@ class FragmentMyPage : Fragment() {
             }
             override fun onCancelled(error: DatabaseError) { }
         })
+
+        binding.btnModify.setOnClickListener {
+            val intent = Intent(context, ModifyActivity::class.java)
+            startActivity(intent)
+        }
 
 
         return binding.root

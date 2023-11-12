@@ -94,6 +94,10 @@ class MainActivity : AppCompatActivity() {
         if (switchToChatListFragment) {
             switchToChatListFragment()
         }
+        var switchToMyPageFragment = intent.getBooleanExtra("switch_to_mypage_fragment", false)
+        if (switchToMyPageFragment) {
+            switchToMyPageFragment()
+        }
 
 
         //버튼 누르면 로그아웃하기
@@ -135,7 +139,10 @@ class MainActivity : AppCompatActivity() {
         viewPager.currentItem = 2   //2번 인덱스 = 밸런스게임 프래그먼트
     }
     fun switchToChatListFragment() {
-        viewPager.currentItem = 1   //2번 인덱스 = 밸런스게임 프래그먼트
+        viewPager.currentItem = 1   //1번 인덱스 = 채팅방 목록 프래그먼트
+    }
+    fun switchToMyPageFragment() {
+        viewPager.currentItem = 3   //3번 인덱스 = 내 정보 프래그먼트
     }
 
 }

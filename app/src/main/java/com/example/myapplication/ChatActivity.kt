@@ -9,9 +9,16 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
 import android.view.View.GONE
+import android.view.View.OnTouchListener
 import android.view.View.VISIBLE
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +39,7 @@ class ChatActivity : AppCompatActivity() {
         val ADD_ACTIVITY_REQUEST_CODE = 1
     }
 
-    //뷰바인딩
+    //뷰 바인딩
     lateinit var binding: ActivityChatBinding
 
     //채팅 내용 설정을 위한 변수들
@@ -49,12 +56,14 @@ class ChatActivity : AppCompatActivity() {
     lateinit var mDbRef: DatabaseReference
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().reference
+
 
         //뒤로가기 버튼
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -79,14 +88,15 @@ class ChatActivity : AppCompatActivity() {
         binding.chatRecyclerView.adapter = messageAdapter
 
 
-        //유저리스트에서 넘어온 상대방의 name, uId 데이터를 receiver-- 변수에 담기
+        //프로필에서 넘어온 상대방의 name, uId 데이터를 receiver-- 변수에 담기
         receiverName = intent.getStringExtra("receiverName").toString()
         receiverUid = intent.getStringExtra("receiverId").toString()
         var chatFlag = intent.getBooleanExtra("chatFlag", false)
         if(chatFlag) {
             binding.frameChat.visibility = GONE
             binding.frameSimpleChat.visibility = VISIBLE
-            binding.fabSimpleChat.setText("일반채팅")
+            binding.btnSimpleChat.setBackgroundResource(R.drawable.icon_common_chat)
+            //binding.fabSimpleChat.setText("일반채팅")
             binding.fabAdd.visibility = VISIBLE
         }
         //액션바에 상대방 이름을 보여주기
@@ -130,13 +140,20 @@ class ChatActivity : AppCompatActivity() {
                 binding.messageEdit.setText("")
 
                 //메세지를 보냈을 때 간편채팅 화면이라면, 일반채팅 화면으로 전환해줌
-                val btnText: String = binding.fabSimpleChat.getText().toString()
-                if (btnText == "일반채팅") {
+                val currentBackground = binding.btnSimpleChat.background.constantState?.newDrawable()
+                if (currentBackground?.constantState == ContextCompat.getDrawable(this, R.drawable.icon_common_chat)?.constantState) {
+                    binding.btnSimpleChat.setBackgroundResource(R.drawable.icon_simple_chat)
                     binding.frameChat.visibility = VISIBLE
                     binding.frameSimpleChat.visibility = GONE
                     binding.fabAdd.visibility = GONE
-                    binding.fabSimpleChat.setText("간편채팅")
                 }
+//                val btnText: String = binding.fabSimpleChat.getText().toString()
+//                if (btnText == "일반채팅") {
+//                    binding.frameChat.visibility = VISIBLE
+//                    binding.frameSimpleChat.visibility = GONE
+//                    binding.fabAdd.visibility = GONE
+//                    binding.fabSimpleChat.setText("간편채팅")
+//                }
             }
 
 
@@ -171,27 +188,47 @@ class ChatActivity : AppCompatActivity() {
             startActivityForResult(intent, ADD_ACTIVITY_REQUEST_CODE)
         }
 
-        //간편채팅/일반채팅 플로팅버튼
-        binding.fabSimpleChat.setOnClickListener {
-            val btnText: String = binding.fabSimpleChat.getText().toString()
+//        //간편채팅/일반채팅 플로팅버튼
+//        binding.fabSimpleChat.setOnClickListener {
+//            val btnText: String = binding.fabSimpleChat.getText().toString()
+//
+//            when (btnText) {
+//                "간편채팅" -> {
+//                    binding.frameChat.visibility = GONE
+//                    binding.frameSimpleChat.visibility = VISIBLE
+//                    binding.fabSimpleChat.setText("일반채팅")
+//                    binding.fabAdd.visibility = VISIBLE
+//                }
+//
+//                "일반채팅" -> {
+//                    binding.frameChat.visibility = VISIBLE
+//                    binding.frameSimpleChat.visibility = GONE
+//                    binding.fabSimpleChat.setText("간편채팅")
+//                    binding.fabAdd.visibility = GONE
+//                }
+//            }
+//        }//onClick 리스너 끝
 
-            when (btnText) {
-                "간편채팅" -> {
-                    binding.frameChat.visibility = GONE
-                    binding.frameSimpleChat.visibility = VISIBLE
-                    binding.fabSimpleChat.setText("일반채팅")
-                    binding.fabAdd.visibility = VISIBLE
-                }
+        // 버튼을 누르면 간편채팅-일반채팅 화면 전환
+        binding.btnSimpleChat.setOnClickListener {
+            // 현재 배경 리소스 확인
+            val currentBackground = binding.btnSimpleChat.background.constantState?.newDrawable()
 
-                "일반채팅" -> {
-                    binding.frameChat.visibility = VISIBLE
-                    binding.frameSimpleChat.visibility = GONE
-                    binding.fabSimpleChat.setText("간편채팅")
-                    binding.fabAdd.visibility = GONE
-                }
+            // 현재 배경 리소스가 간편채팅 버튼일 때
+            if (currentBackground?.constantState == ContextCompat.getDrawable(this, R.drawable.icon_simple_chat)?.constantState) {
+                binding.btnSimpleChat.setBackgroundResource(R.drawable.icon_common_chat)
+                binding.frameChat.visibility = GONE
+                binding.frameSimpleChat.visibility = VISIBLE
+                binding.fabAdd.visibility = VISIBLE
+            } else {
+                binding.btnSimpleChat.setBackgroundResource(R.drawable.icon_simple_chat)
+                binding.frameChat.visibility = VISIBLE
+                binding.frameSimpleChat.visibility = GONE
+                binding.fabAdd.visibility = GONE
             }
-
         }
+
+
     } //oncreate 끝
 
 

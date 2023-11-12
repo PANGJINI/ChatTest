@@ -300,6 +300,9 @@ class BalanceGameActivity : AppCompatActivity() {
                         commentKeyList.add(uidKey)
                     }
                     adapter.notifyDataSetChanged()
+                    //댓글 제일 마지막 리사이클러뷰로 스크롤 내림
+                    binding.commentRecyclerView.scrollToPosition(commentList.size-1)
+
                 }
                 override fun onCancelled(error: DatabaseError) { }
             })

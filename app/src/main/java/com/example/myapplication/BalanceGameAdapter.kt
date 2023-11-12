@@ -72,7 +72,7 @@ import org.w3c.dom.Text
             //댓글 작성자 uid가 현재 접속자 uid와 같을 때
             //내가 작성한 댓글 색상을 다른 색으로 표시한다
             //내가 작성한 댓글을 지울 수 있다
-            if (currentComment.writerId == currentUser) {
+            if (writerId == currentUser) {
                 val pinkColor = ContextCompat.getColor(context, R.color.pink_)
                 holder.writerName.setTextColor(pinkColor)
                 holder.removeButton.visibility = View.VISIBLE
@@ -95,6 +95,8 @@ import org.w3c.dom.Text
                     dialog.show()
                 }
             } else {
+                val textColor = ContextCompat.getColor(context, R.color.textColor)
+                holder.writerName.setTextColor(textColor)
                 holder.removeButton.visibility = View.INVISIBLE
                 holder.removeButton.setOnClickListener(null)
             }

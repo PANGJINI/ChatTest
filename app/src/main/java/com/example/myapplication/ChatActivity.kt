@@ -152,6 +152,8 @@ class ChatActivity : AppCompatActivity() {
                         messageList.add(message!!)
                     }
                     messageAdapter.notifyDataSetChanged()
+                    //채팅 보낼때 제일 마지막 리사이클러뷰로 스크롤 내림
+                    binding.chatRecyclerView.scrollToPosition(messageList.size-1)
                 }
 
                 override fun onCancelled(error: DatabaseError) {

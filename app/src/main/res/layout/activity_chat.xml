@@ -57,16 +57,18 @@
         android:textColor="#7A7A7A"
         android:src="@android:drawable/ic_input_add" />
 
-<!--    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
-<!--        android:id="@+id/fabSimpleChat"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_above="@id/input_layout"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:text="간편채팅"-->
-<!--        android:backgroundTint="@color/pink"-->
-<!--        app:icon="@drawable/chat_icon_2" />-->
+    <!--    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+    <!--        android:id="@+id/fabSimpleChat"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_above="@id/input_layout"-->
+    <!--        android:layout_alignParentRight="true"-->
+    <!--        android:layout_marginBottom="10dp"-->
+    <!--        android:text="간편채팅"-->
+    <!--        android:backgroundTint="@color/pink"-->
+    <!--        app:icon="@drawable/chat_icon_2" />-->
+
+
 
     <LinearLayout
         android:id="@+id/input_layout"
@@ -74,35 +76,45 @@
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="@drawable/login_border"
-        android:paddingStart="20dp"
-        android:drawablePadding="10dp"
-        android:paddingEnd="20dp"
         android:gravity="center">
+
         <ImageButton
             android:id="@+id/btnSimpleChat"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/icon_simple_chat"
             android:scaleType="fitCenter" />
-        <EditText
-            android:id="@+id/message_edit"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="8"
-            android:theme="@style/editTextTheme"
-            android:background="@android:color/transparent"
-            android:hint="메세지를 입력하세요."/>
-        <ImageButton
-            android:id="@+id/send_btn"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/send_btn"
-            android:scaleType="fitCenter" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_weight="9"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@drawable/login_border"
+            android:paddingStart="20dp"
+            android:drawablePadding="10dp"
+            android:paddingEnd="20dp"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/message_edit"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="8"
+                android:theme="@style/editTextTheme"
+                android:background="@android:color/transparent"
+                android:hint="메세지를 입력하세요."/>
+            <ImageButton
+                android:id="@+id/send_btn"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/send_pink"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

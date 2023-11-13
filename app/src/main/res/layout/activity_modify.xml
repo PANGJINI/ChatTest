@@ -48,12 +48,27 @@
                     android:gravity="center_vertical"/>
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/edit_name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="이름"
-                android:theme="@style/editTextTheme"/>
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="36dp"
+                    android:text="💗 이름"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/edit_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="이름"
+                    android:textSize="15sp"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+
 
             <EditText
                 android:id="@+id/edit_age"

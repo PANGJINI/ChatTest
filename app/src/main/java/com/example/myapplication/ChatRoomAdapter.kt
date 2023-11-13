@@ -65,11 +65,13 @@ class ChatRoomAdapter(private val context: Context?, private val chatRoomList2: 
                         Glide.with(context).load(task.result).into(holder.circleView)
                     }
                     mDbRef.child("user").child(currentRoom.receiveId.toString()).child("gender")
-                        .addListenerForSingleValueEvent(object :ValueEventListener {
+                        .addValueEventListener(object :ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 gender = snapshot.getValue(String::class.java).toString()
                                 if(gender == "남성") {
                                     holder.circleView.borderColor = holder.blueColor
+                                } else {
+                                    holder.circleView.borderColor = holder.pinkColor
                                 }
                             }
                             override fun onCancelled(error: DatabaseError) {    }
@@ -87,11 +89,13 @@ class ChatRoomAdapter(private val context: Context?, private val chatRoomList2: 
                         Glide.with(context).load(task.result).into(holder.circleView)
                     }
                     mDbRef.child("user").child(currentRoom.sendId.toString()).child("gender")
-                        .addListenerForSingleValueEvent(object :ValueEventListener {
+                        .addValueEventListener(object :ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 gender = snapshot.getValue(String::class.java).toString()
                                 if(gender == "남성") {
                                     holder.circleView.borderColor = holder.blueColor
+                                } else {
+                                    holder.circleView.borderColor = holder.pinkColor
                                 }
                             }
                             override fun onCancelled(error: DatabaseError) {    }
@@ -124,6 +128,8 @@ class ChatRoomAdapter(private val context: Context?, private val chatRoomList2: 
         val circleView: CircleImageView = itemView.findViewById(R.id.circleView)
         val lastMessage: TextView = itemView.findViewById(R.id.user_last_message)
         val blueColor = ContextCompat.getColor(itemView.context, R.color.blue)
+        val pinkColor = ContextCompat.getColor(itemView.context, R.color.pink)
+
 
     }
 }

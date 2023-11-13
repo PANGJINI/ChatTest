@@ -42,7 +42,7 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
         } else {    //받는 데이터
             val viewHolder = holder as ReceiveViewHolder
             viewHolder.receiveMessage.text = currentMessage.message
-            viewHolder.receiveTime.text = currentMessage.time
+            viewHolder.receiveTime.text = currentMessage.time?.substring(0, 5) ?: "0"
 
         }
     }

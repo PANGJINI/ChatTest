@@ -50,10 +50,10 @@ class MainActivity : AppCompatActivity() {
         binding.viewpager.adapter = ViewPagerAdapter(this)
 
         var tabIconList = listOf(
-            R.drawable.profile_icon_gray,
-            R.drawable.chat_icon_gray,
-            R.drawable.balance_icon_gray,
-            R.drawable.icon_pw
+            R.drawable.profile_main,
+            R.drawable.chat_icon_pink,
+            R.drawable.balance_icon_pink,
+            R.drawable.icon_pw_main
         )
 
         //탭과 뷰페이저 연결하기

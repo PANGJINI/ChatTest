@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentTextReplaceBinding
@@ -25,8 +28,9 @@ import com.google.firebase.ktx.Firebase
 class FragmentTextReplace : Fragment() {
 
     lateinit var binding: FragmentTextReplaceBinding
-    private lateinit var textReplaceList: ArrayList<SimpleChatDataModel>
+    lateinit var textReplaceList: ArrayList<SimpleChatDataModel>
     lateinit var adapter: MyAdapter
+    lateinit var searchView: SearchView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
 
@@ -39,9 +43,23 @@ class FragmentTextReplace : Fragment() {
         mDbRef = Firebase.database.reference
         textReplaceList = ArrayList()
         adapter = MyAdapter(context, textReplaceList)
+        searchView = binding.searchView
 
         binding.textReplaceRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.textReplaceRecyclerView.adapter = adapter
+
+        //SearchView에 리스너 추가
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+
+        })
 
         //DB에 있는 간편채팅 데이터 가져와서 리스트에 넣기
         mDbRef.child("simpleChat").child("textReplace")
@@ -69,9 +87,18 @@ class FragmentTextReplace : Fragment() {
     class MyAdapter(
         private val context: Context?,
         private val textReplaceList: ArrayList<SimpleChatDataModel>
-    ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+    ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(), Filterable {
+
+        private var excelSearchList: ArrayList<SimpleChatDataModel>? = null
+
+        //리사이클러뷰와 연결하는 부분
         inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val textView: TextView = itemView.findViewById(R.id.item_data)
+        }
+
+        //초기화 구문 init
+        init {
+            this.excelSearchList = textReplaceList
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -81,11 +108,11 @@ class FragmentTextReplace : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return textReplaceList.size
+            return excelSearchList?.size ?: 0
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val currentData = textReplaceList[position].chatData
+            val currentData = excelSearchList?.get(position)?.chatData
             holder.textView.text = currentData
             //리사이클러뷰를 선택했을 때 editText에 텍스트 넣기
             holder.itemView.setOnClickListener{
@@ -95,6 +122,40 @@ class FragmentTextReplace : Fragment() {
             holder.itemView.setOnLongClickListener {
                 (context as ChatActivity).binding.messageEdit.append(" " + currentData)
                 true
+            }
+        }
+
+        // Filter 클래스와 관련된 부분
+        override fun getFilter() : Filter {
+            return object : Filter() {
+                override fun performFiltering(charSequence: CharSequence?): FilterResults {
+                    var charString = charSequence.toString()
+                    if(charString.isEmpty()) {
+                        excelSearchList = textReplaceList
+                    } else {
+                        var filteredList = ArrayList<SimpleChatDataModel>()
+                        for(row in textReplaceList) {
+                            if (row.chatData.toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row)
+                            }
+                        }
+                        excelSearchList = filteredList
+                    }
+                    val filterResults = FilterResults()
+                    filterResults.values = excelSearchList
+                    return filterResults
+                }
+
+                override fun publishResults(charSequence: CharSequence?, filterResults: FilterResults?) {
+                    if (filterResults != null) {
+                        excelSearchList = filterResults.values as ArrayList<SimpleChatDataModel>
+                        notifyDataSetChanged()
+                    }
+
+
+
+                }
+
             }
         }
 

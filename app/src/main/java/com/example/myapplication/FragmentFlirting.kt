@@ -9,8 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,13 +29,15 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import org.w3c.dom.Text
+import java.util.Locale
 
 
 class FragmentFlirting : Fragment() {
 
     lateinit var binding: FragmentFlirtingBinding
-    private lateinit var flirtList: ArrayList<SimpleChatDataModel>
+    lateinit var flirtList: ArrayList<SimpleChatDataModel>
     lateinit var adapter: MyAdapter
+    lateinit var searchView: SearchView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
 
@@ -46,9 +51,23 @@ class FragmentFlirting : Fragment() {
         mDbRef = Firebase.database.reference
         flirtList = ArrayList()
         adapter = MyAdapter(context, flirtList)
+        searchView = binding.searchView
 
         binding.flirtingRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.flirtingRecyclerView.adapter = adapter
+
+        //SearchView에 리스너 추가
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+
+        })
 
         //DB에 있는 간편채팅 데이터 가져와서 리스트에 넣기
         mDbRef.child("simpleChat").child("flirt")
@@ -76,9 +95,18 @@ class FragmentFlirting : Fragment() {
     class MyAdapter(
         private val context: Context?,
         private val flirtList: ArrayList<SimpleChatDataModel>
-    ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+    ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(), Filterable {
+
+        private var excelSearchList: ArrayList<SimpleChatDataModel>? = null
+
+        //리사이클러뷰와 연결하는 부분
         inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val textView: TextView = itemView.findViewById(R.id.item_data)
+        }
+
+        //초기화 구문 init
+        init {
+            this.excelSearchList = flirtList
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -88,22 +116,54 @@ class FragmentFlirting : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return flirtList.size
+            return excelSearchList?.size ?: 0
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val currentData = flirtList[position].chatData
+            val currentData = excelSearchList?.get(position)?.chatData
             holder.textView.text = currentData
-            Log.e("간챗", "데이터 $currentData")
             //리사이클러뷰를 선택했을 때 editText에 텍스트 넣기
             holder.itemView.setOnClickListener{
-                Log.e("간챗", "클릭했을때 데이터 $currentData")
                 (context as ChatActivity).binding.messageEdit.setText(currentData)
             }
             //길게 클릭할 경우 텍스트 누적시키기
             holder.itemView.setOnLongClickListener {
                 (context as ChatActivity).binding.messageEdit.append(" " + currentData)
                 true
+            }
+        }
+
+        // Filter 클래스와 관련된 부분
+        override fun getFilter() : Filter {
+            return object : Filter() {
+                override fun performFiltering(charSequence: CharSequence?): FilterResults {
+                    var charString = charSequence.toString()
+                    if(charString.isEmpty()) {
+                        excelSearchList = flirtList
+                    } else {
+                        var filteredList = ArrayList<SimpleChatDataModel>()
+                        for(row in flirtList) {
+                            if (row.chatData.toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row)
+                            }
+                        }
+                        excelSearchList = filteredList
+                    }
+                    val filterResults = FilterResults()
+                    filterResults.values = excelSearchList
+                    return filterResults
+                }
+
+                override fun publishResults(charSequence: CharSequence?, filterResults: FilterResults?) {
+                    if (filterResults != null) {
+                        excelSearchList = filterResults.values as ArrayList<SimpleChatDataModel>
+                        notifyDataSetChanged()
+                    }
+
+
+
+                }
+
             }
         }
 

@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,12 +24,13 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.Locale
 
 
 class FragmentEmoji : Fragment() {
 
     lateinit var binding: FragmentEmojiBinding
-    private lateinit var emojiList: ArrayList<SimpleChatDataModel>
+    lateinit var emojiList: ArrayList<SimpleChatDataModel>
     lateinit var adapter: MyAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -43,6 +47,7 @@ class FragmentEmoji : Fragment() {
 
         binding.emojiRecyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.emojiRecyclerView.adapter = adapter
+
 
         //DB에 있는 간편채팅 데이터 가져와서 리스트에 넣기
         mDbRef.child("simpleChat").child("emoji")
@@ -71,6 +76,8 @@ class FragmentEmoji : Fragment() {
         private val context: Context?,
         private val emojiList: ArrayList<SimpleChatDataModel>
     ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+
+        //리사이클러뷰와 연결하는 부분
         inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val textView: TextView = itemView.findViewById(R.id.item_data)
         }
@@ -98,6 +105,7 @@ class FragmentEmoji : Fragment() {
                 true
             }
         }
+
 
     }//어댑터 끝
 }

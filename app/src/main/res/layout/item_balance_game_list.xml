@@ -59,7 +59,7 @@
             android:layout_marginBottom="15dp"/>
         <TextView
             android:id="@+id/balanceVoteCount"
-            android:layout_width="35dp"
+            android:layout_width="15dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="수"

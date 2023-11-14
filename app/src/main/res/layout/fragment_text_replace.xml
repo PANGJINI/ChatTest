@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iconifiedByDefault="false"
+        app:queryBackground="@null"
+        android:layout_marginLeft="-8dp"
         app:queryHint="Search" />
 
     <androidx.recyclerview.widget.RecyclerView

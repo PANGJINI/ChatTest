@@ -76,7 +76,7 @@ class ChatActivity : AppCompatActivity() {
 
         //탭과 뷰페이저 연결하기
         //var tabTextList = listOf("주접&플러팅", "밈", "특수문자", "텍대", "이모지", "밸런스게임", "논쟁")
-        var tabTextList = listOf("My", "주접&플러팅", "밈", "특수문자", "이모지", "텍대")
+        var tabTextList = listOf("My", "주접&플러팅", "텍대", "밈", "이모지", "특수문자" )
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             tab.text = tabTextList[position]
         }.attach()
@@ -238,10 +238,10 @@ class ChatActivity : AppCompatActivity() {
         val fragments = listOf<Fragment>(
             FragmentMyData(),
             FragmentFlirting(),
+            FragmentTextReplace(),
             FragmentMeme(),
-            FragmentSpecialChar(),
             FragmentEmoji(),
-            FragmentTextReplace()
+            FragmentSpecialChar()
         )
 
         //프래그먼트 페이지 수 반환
